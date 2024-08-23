@@ -9,3 +9,4 @@ CREATE TABLE reservations (
   reservation_start TIMESTAMP,
   reservation_end  TIMESTAMP
 );
+
