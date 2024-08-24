@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <link rel="stylesheet" href="/styles/main.css" />
+  <link rel="stylesheet" href="/styles/layout.css" />
+</head>
+<body>
+  <form id="sign-up-form" class="sign-up-form" action="/users/register" method="post">
+    <p>Register</p>
+
+    <!-- Display validation errors -->
+    <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+      <div class="errors">
+        <ul>
+          <% errors.forEach(function(error) { %>
+            <li><%= error %></li>
+          <% }); %>
+        </ul>
+      </div>
+    <% } %>
+
+    <div class="sign-up-form__field-wrapper">
+      <input type="text" name="username" placeholder="Username" value="<%= typeof username !== 'undefined' ? username : '' %>">
+    </div>
+
+    <div class="sign-up-form__field-wrapper">
+      <input type="email" name="email" placeholder="Email" value="<%= typeof email !== 'undefined' ? email : '' %>">
+    </div>
+
+    <div class="sign-up-form__field-wrapper">
+      <input type="password" name="password" placeholder="Password">
+    </div>
+
+    <div class="sign-up-form__field-wrapper">
+      <input type="text" name="phoneNumber" placeholder="Phone number" value="<%= typeof phoneNumber !== 'undefined' ? phoneNumber : '' %>">
+    </div>
+
+    <div class="sign-up-form__field-wrapper">
+      <button type="submit">Register</button>
+      <a id="sign-up-form__cancel" href="/">Cancel</a>
+    </div>
+  </form>
+</body>
+</html>
