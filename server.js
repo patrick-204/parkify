@@ -32,6 +32,7 @@ const userApiRoutes = require('./routes/users-api');
 const usersRoutes = require('./routes/users');
 const parkingSpacesRoutes = require ('./routes/parking_spaces_api')
 const vehicleRoutes = require ('./routes/vehicles_api')
+const reservationsRoutes = require ('./routes/reservations_api')
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
@@ -40,6 +41,7 @@ app.use('/api/users', userApiRoutes);
 app.use('/users', usersRoutes);
 app.use('/api/parking_spaces', parkingSpacesRoutes)
 app.use('/api/vehicles', vehicleRoutes )
+app.use('/api/reservations', reservationsRoutes)
 // Note: mount other resources here, using the same pattern above
 
 // Home page
