@@ -3,14 +3,14 @@ const pool = require('../connection');
 // /**
 //  * Check if user already exists.
 //  */
-const doesUserExist = function(username) {
+const doesUserExist = function(name) {
   const queryString = `
   SELECT * FROM users
-  WHERE username = $1;
+  WHERE name = $1;
   `;
 
   return pool
-    .query(queryString, [username])
+    .query(queryString, [name])
     .then((result) => {
       if (result.rows.length > 0) {
         // console.log("user exists:", true);

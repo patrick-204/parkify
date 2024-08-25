@@ -7,8 +7,8 @@ const { addUserToUsersDatabase } = require('../db/queries/add_user_to_users_db')
 
 
 router.get('/register', (req, res) => {
-  const parkifyUserID = req.session.user_id;
-  // const userName = req.session.name;
+  const parkifyUserID = req.session.userId;
+  // const name = req.session.name;
 
   if (!parkifyUserID) {
     res.render('register'); 
@@ -20,32 +20,9 @@ router.get('/register', (req, res) => {
 router.post('/register', (req, res) => {
   const { name, password, email, phoneNumber } = req.body;
 
-  // Check if the user already exists in the database
-  doesUserExist(name)
-  .then((userExists) => {
-    if (userExists) {
-      return res.status(409).send("User already exists.");
-    } else {
-      // Add a new user to the database
-      addUserToUsersDatabase(name, password, email, phoneNumber)
-        .then((newUser) => {
-          // console.log(newUser);
-          res.redirect("/");
-        })
-        .catch((error) => {
-          console.error("Error adding user to organization:", error);
-          res.status(500).send("Internal Server Error");
-        });
-    }
-  })
-  .catch((error) => {
-    console.error("Error checking for user existence:", error);
-    res.status(500).send("Internal Server Error");
-  });
-
   const errors = [];
-  if (!username || username.trim().length === 0) {
-    errors.push('Username is required.');
+  if (!name || name.trim().length === 0) {
+    errors.push('Name is required.');
   }
   if (!email || !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(email)) {
     errors.push('A valid email is required.');
@@ -58,10 +35,27 @@ router.post('/register', (req, res) => {
   }
 
   if (errors.length > 0) {
-    res.render('register', { errors, username, email, phoneNumber });
-  } else {
-    res.redirect('/');
-  }
+    return res.render('register', { errors, name, email, phoneNumber });
+  } 
+
+  // Proceed with database operations if no validation errors
+  doesUserExist(name)
+    .then((userExists) => {
+      if (userExists) {
+        return res.status(409).send("User already exists.");
+      } else {
+        return addUserToUsersDatabase(name, password, email, phoneNumber);
+      }
+    })
+    .then((newUser) => {
+      // Store user ID or other relevant info in the session if needed
+      req.session.userId = newUser.id; // Assuming `newUser` has an `id` property
+      res.redirect("/");
+    })
+    .catch((error) => {
+      console.error("Error adding user to users table:", error);
+      res.status(500).send("Internal Server Error");
+    });
 });
 
 
