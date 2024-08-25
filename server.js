@@ -6,6 +6,9 @@ const sassMiddleware = require('./lib/sass-middleware');
 const express = require('express');
 const morgan = require('morgan');
 
+// Import stripe
+const stripe = require('stripe')('sk_test_51PjqBV072KK9cj5n1SJAd3mzXSH1KlHi4K4DbXp4nE0dT6PuCMf55PbfN8DD7iFfE9edaylAhJEqBikQ7ui7NrKn001H3IQd2L');
+
 const PORT = process.env.PORT || 8080;
 const app = express();
 
@@ -29,15 +32,15 @@ app.use(express.static('public'));
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
 const userApiRoutes = require('./routes/users-api');
-const widgetApiRoutes = require('./routes/widgets-api');
 const usersRoutes = require('./routes/users');
+const paymentsRoutes = require('./routes/checkout');
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
 // Note: Endpoints that return data (eg. JSON) usually start with `/api`
 app.use('/api/users', userApiRoutes);
-app.use('/api/widgets', widgetApiRoutes);
 app.use('/users', usersRoutes);
+app.use('/checkout', paymentsRoutes);
 // Note: mount other resources here, using the same pattern above
 
 // Home page
