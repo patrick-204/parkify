@@ -47,7 +47,7 @@ router.post('/register', (req, res) => {
     })
     .then((newUser) => {
       // Setting user id for session to maybe use later
-      req.session.userId = newUser.id; 
+      // req.session.userId = newUser.id; 
       res.redirect("/login"); 
     })
     .catch((error) => {
