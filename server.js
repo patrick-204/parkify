@@ -39,6 +39,7 @@ app.use(
 const userApiRoutes = require('./routes/users-api');
 const usersRoutes = require('./routes/users');
 const userRegistrationRoutes = require('./routes/user-registration');
+const userLoginRoutes = require('./routes/user-login');
 const parkingSpacesRoutes = require ('./routes/parking_spaces_api')
 const vehiclesRoutes = require ('./routes/vehicles')
 const vehicleApiRoutes = require ('./routes/vehicles-api')
@@ -51,6 +52,7 @@ const paymentsRoutes = require ('./routes/payments_api')
 app.use('/api/users', userApiRoutes);
 app.use('/users', usersRoutes);
 app.use('/users', userRegistrationRoutes);
+app.use('/login', userLoginRoutes);
 app.use('/api/vehicles', vehicleApiRoutes );
 app.use('/vehicles', vehiclesRoutes );
 app.use('/api/parking_spaces', parkingSpacesRoutes);
