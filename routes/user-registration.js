@@ -1,13 +1,47 @@
 const express = require('express');
 const router = express.Router();
 
+// Import db functions
+const { doesUserExist } = require('../db/queries/does_user_exist');
+const { addUserToUsersDatabase } = require('../db/queries/add_user_to_users_db');
+
 
 router.get('/register', (req, res) => {
-  res.render('register'); 
+  const parkifyUserID = req.session.user_id;
+  // const userName = req.session.name;
+
+  if (!parkifyUserID) {
+    res.render('register'); 
+  } else {
+    res.redirect('/');
+  }
 });
 
 router.post('/register', (req, res) => {
-  const { username, password, email, phoneNumber } = req.body;
+  const { name, password, email, phoneNumber } = req.body;
+
+  // Check if the user already exists in the database
+  doesUserExist(name)
+  .then((userExists) => {
+    if (userExists) {
+      return res.status(409).send("User already exists.");
+    } else {
+      // Add a new user to the database
+      addUserToUsersDatabase(name, password, email, phoneNumber)
+        .then((newUser) => {
+          // console.log(newUser);
+          res.redirect("/");
+        })
+        .catch((error) => {
+          console.error("Error adding user to organization:", error);
+          res.status(500).send("Internal Server Error");
+        });
+    }
+  })
+  .catch((error) => {
+    console.error("Error checking for user existence:", error);
+    res.status(500).send("Internal Server Error");
+  });
 
   const errors = [];
   if (!username || username.trim().length === 0) {
