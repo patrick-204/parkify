@@ -5,10 +5,8 @@ const router = express.Router();
 const { doesUserExist } = require('../db/queries/does_user_exist');
 const { addUserToUsersDatabase } = require('../db/queries/add_user_to_users_db');
 
-
 router.get('/register', (req, res) => {
   const parkifyUserID = req.session.userId;
-  // const name = req.session.name;
 
   if (!parkifyUserID) {
     res.render('register'); 
@@ -36,27 +34,28 @@ router.post('/register', (req, res) => {
 
   if (errors.length > 0) {
     return res.render('register', { errors, name, email, phoneNumber });
-  } 
+  }
 
-  // Proceed with database operations if no validation errors
-  doesUserExist(name)
+  doesUserExist(name, email)
     .then((userExists) => {
       if (userExists) {
-        return res.status(409).send("User already exists.");
-      } else {
-        return addUserToUsersDatabase(name, password, email, phoneNumber);
+        errors.push('User already exists.');
+        return res.status(409).render('register', { errors, name, email, phoneNumber });
       }
+
+      return addUserToUsersDatabase(name, password, email, phoneNumber);
     })
     .then((newUser) => {
-      // Store user ID or other relevant info in the session if needed
-      req.session.userId = newUser.id; // Assuming `newUser` has an `id` property
-      res.redirect("/");
+      // Setting user id for session to maybe use later
+      req.session.userId = newUser.id; 
+      res.redirect("/login"); 
     })
     .catch((error) => {
       console.error("Error adding user to users table:", error);
-      res.status(500).send("Internal Server Error");
+      if (!res.headersSent) {
+        res.status(500).send("Internal Server Error");
+      }
     });
 });
-
 
 module.exports = router;
