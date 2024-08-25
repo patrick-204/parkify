@@ -42,7 +42,7 @@ router.post('/', (req, res) => {
     }
 
     // Set a cookie inside the session object to the value of the user's ID
-    req.session.user_id = user.id;
+    req.session.userId = user.id;
 
     // Set other required cookies
     req.session.email = user.email;
