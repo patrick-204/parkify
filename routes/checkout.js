@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
 
     const formattedPrice = amountInDollars.toFixed(2); 
 
-    res.render('checkout', { price: formattedPrice });
+    res.render('checkout', { price: formattedPrice, parkingSpotId });
   } catch (error) {
     console.error("Error retrieving price:", error);
     res.status(500).send("Internal Server Error");
@@ -68,7 +68,7 @@ router.post('/create-checkout-session', async (req, res) => {
           price_data: {
             currency: 'cad',
             product_data: {
-              name: 'Parking Spot', // replace with parking spot name later
+              name: `Parking Spot ${parkingSpotId}`, // replace with parking spot name later
             },
             unit_amount: amountInCents, 
           },
