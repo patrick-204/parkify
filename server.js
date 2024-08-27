@@ -39,11 +39,13 @@ app.use(
 const userApiRoutes = require('./routes/users-api');
 const usersRoutes = require('./routes/users');
 const userRegistrationRoutes = require('./routes/user-registration');
-const parkingSpacesRoutes = require ('./routes/parking_spaces_api')
-const vehiclesRoutes = require ('./routes/vehicles')
-const vehicleApiRoutes = require ('./routes/vehicles-api')
-const reservationsRoutes = require ('./routes/reservations_api')
-const paymentsRoutes = require ('./routes/payments_api')
+const userLoginRoutes = require('./routes/user-login');
+const userLogoutRoutes = require('./routes/user-logout');
+const parkingSpacesRoutes = require ('./routes/parking_spaces_api');
+const vehiclesRoutes = require ('./routes/vehicles');
+const vehicleApiRoutes = require ('./routes/vehicles-api');
+const reservationsRoutes = require ('./routes/reservations_api');
+const paymentsRoutes = require ('./routes/payments_api');
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
@@ -51,11 +53,13 @@ const paymentsRoutes = require ('./routes/payments_api')
 app.use('/api/users', userApiRoutes);
 app.use('/users', usersRoutes);
 app.use('/users', userRegistrationRoutes);
+app.use('/login', userLoginRoutes);
+app.use('/logout', userLogoutRoutes);
 app.use('/api/vehicles', vehicleApiRoutes );
 app.use('/vehicles', vehiclesRoutes );
 app.use('/api/parking_spaces', parkingSpacesRoutes);
-app.use('/api/reservations', reservationsRoutes)
-app.use('/api/payments', paymentsRoutes)
+app.use('/api/reservations', reservationsRoutes);
+app.use('/api/payments', paymentsRoutes);
 // Note: mount other resources here, using the same pattern above
 
 // Home page
@@ -63,7 +67,8 @@ app.use('/api/payments', paymentsRoutes)
 // Separate them into separate routes files (see above).
 
 app.get('/', (req, res) => {
-  res.render('index');
+  const isLoggedIn = req.session.userId !== undefined;
+  res.render('index', { isLoggedIn });
 });
 
 
