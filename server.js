@@ -5,6 +5,7 @@ require('dotenv').config();
 const sassMiddleware = require('./lib/sass-middleware');
 const express = require('express');
 const morgan = require('morgan');
+const cookieSession = require("cookie-session");
 
 const PORT = process.env.PORT || 8080;
 const app = express();
@@ -26,18 +27,35 @@ app.use(
 );
 app.use(express.static('public'));
 
+app.use(
+  cookieSession({
+    name: "session",
+    keys: ["secret"],
+  })
+);
+
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
 const userApiRoutes = require('./routes/users-api');
 const usersRoutes = require('./routes/users');
-const paymentsRoutes = require('./routes/checkout');
+const userRegistrationRoutes = require('./routes/user-registration');
+const parkingSpacesRoutes = require ('./routes/parking_spaces_api')
+const vehiclesRoutes = require ('./routes/vehicles')
+const vehicleApiRoutes = require ('./routes/vehicles-api')
+const reservationsRoutes = require ('./routes/reservations_api')
+const paymentsRoutes = require ('./routes/payments_api')
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
 // Note: Endpoints that return data (eg. JSON) usually start with `/api`
 app.use('/api/users', userApiRoutes);
 app.use('/users', usersRoutes);
-app.use('/checkout', paymentsRoutes);
+app.use('/users', userRegistrationRoutes);
+app.use('/api/vehicles', vehicleApiRoutes );
+app.use('/vehicles', vehiclesRoutes );
+app.use('/api/parking_spaces', parkingSpacesRoutes);
+app.use('/api/reservations', reservationsRoutes)
+app.use('/api/payments', paymentsRoutes)
 // Note: mount other resources here, using the same pattern above
 
 // Home page
@@ -47,6 +65,7 @@ app.use('/checkout', paymentsRoutes);
 app.get('/', (req, res) => {
   res.render('index');
 });
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
