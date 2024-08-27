@@ -13,12 +13,14 @@
   "license": "ISC",
   "dependencies": {
     "chalk": "^2.4.2",
+    "cookie-session": "^2.1.0",
     "dotenv": "^2.0.0",
     "ejs": "^2.6.2",
     "express": "^4.17.1",
     "morgan": "^1.9.1",
     "pg": "^8.5.0",
-    "sass": "^1.35.1"
+    "sass": "^1.35.1",
+    "stripe": "^16.8.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.10"

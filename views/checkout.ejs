@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Purchase a Parking Spot</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+  <section>
+    <div class="product">
+      <!-- Loop through parking spots here and insert pictures -->
+      <img src="https://i.imgur.com/EHyR2nP.png" alt="Parking spot to be reserved" />
+      <div class="description">
+        <h3>Parking Spot <%= parkingSpotId %></h3>
+        <h5>$<%= price %></h5> <!-- Display the price here -->
+      </div>
+    </div>
+    <form action="/checkout/create-checkout-session" method="POST">
+      <button type="submit" id="checkout-button">Checkout</button>
+    </form>
+  </section>
+</body>
+</html>
