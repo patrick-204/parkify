@@ -7,8 +7,34 @@ const express = require('express');
 const morgan = require('morgan');
 const cookieSession = require("cookie-session");
 
+const http = require('http');
+const { Server } = require('socket.io');
+
 const PORT = process.env.PORT || 8080;
 const app = express();
+
+
+// socket.io configuration 
+const server = http.createServer(app);
+const io = new Server(server);
+
+// Set up a connection event for incoming sockets
+io.on('connection', (socket) => {
+  console.log('A user connected:', socket.id);
+
+  // Listen for chat message events from clients
+  socket.on('chat message', (msg) => {
+    console.log('Message received:', msg);
+
+    // Broadcast the message to all connected clients
+    io.emit('chat message', msg);
+  });
+
+  // Handle user disconnection
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+  });
+});
 
 app.set('view engine', 'ejs');
 
@@ -71,7 +97,6 @@ app.get('/', (req, res) => {
   res.render('index', { isLoggedIn });
 });
 
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 
-app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}`);
-});
