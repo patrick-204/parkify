@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="/styles/main.css" />
+  <link rel="stylesheet" href="/styles/layout.css" />
+</head>
+<body>
+  <form id="login-form" class="login-form" action="/login" method="post">
+    <p>Login</p>
+
+    <!-- Display validation errors -->
+    <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+      <div class="errors">
+        <ul>
+          <% errors.forEach(function(error) { %>
+            <li><%= error %></li>
+          <% }); %>
+        </ul>
+      </div>
+    <% } %>
+
+    <div class="login-form__field-wrapper">
+      <input type="email" name="email" placeholder="Email" value="<%= typeof email !== 'undefined' ? email : '' %>">
+    </div>
+
+    <div class="login-form__field-wrapper">
+      <input type="password" name="password" placeholder="Password">
+    </div>
+
+    <div class="login-form__field-wrapper">
+      <button type="submit">Login</button>
+      <a id="login-form__cancel" href="/">Cancel</a>
+    </div>
+  </form>
+</body>
+</html>
