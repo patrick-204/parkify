@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "proxy": "http://localhost:8080",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
@@ -13,13 +14,15 @@
   "license": "ISC",
   "dependencies": {
     "chalk": "^2.4.2",
+    "cors": "^2.8.5",
     "dotenv": "^2.0.0",
     "ejs": "^2.6.2",
     "express": "^4.17.1",
     "morgan": "^1.9.1",
-    "pg": "^8.5.0",
+    "pg": "^8.12.0",
     "sass": "^1.35.1",
-    "socket.io": "^4.7.5"
+    "socket.io": "^4.7.5",
+    "stripe": "^16.8.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.10"

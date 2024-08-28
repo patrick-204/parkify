@@ -9,13 +9,24 @@ const morgan = require('morgan');
 const http = require('http');
 const { Server } = require('socket.io');
 
+const cors = require('cors');
+
+const db = require('./db/connection'); // Import the PostgreSQL db
+
 const PORT = process.env.PORT || 8080;
 const app = express();
+
+// React implementation 
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'frontend/build')));
 
 
 // socket.io configuration 
 const server = http.createServer(app);
 const io = new Server(server);
+
+
+app.use(cors());
 
 // Set up a connection event for incoming sockets
 io.on('connection', (socket) => {
@@ -64,14 +75,40 @@ app.use('/api/users', userApiRoutes);
 app.use('/users', usersRoutes);
 // Note: mount other resources here, using the same pattern above
 
+
+// React Implementation 
+/* app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend/build', 'index.html'));
+});
+*/ 
+
+
+app.get('/api/items', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM items'); // Example SQL query
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+
+
 // Home page
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 
-app.get('/', (req, res) => {
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+/* app.get('/', (req, res) => {
   res.render('index');
 });
 
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+*/ 
