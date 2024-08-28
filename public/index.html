@@ -1,0 +1,49 @@
+<!-- public/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socket.IO Chat</title>
+  <style>
+    #messages { list-style-type: none; margin: 0; padding: 0; }
+    #messages li { padding: 8px; margin-bottom: 10px; border: 1px solid #ddd; }
+    #form { display: flex; }
+    #input { flex-grow: 1; }
+  </style>
+</head>
+<body>
+  <ul id="messages"></ul>
+  <form id="form" action="">
+    <input id="input" autocomplete="off" /><button type="submit">Send</button>
+  </form>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    // Connect to the server using Socket.IO
+    const socket = io();
+
+    // Listen for 'chat message' events from the server
+    socket.on('chat message', function(msg) {
+      const item = document.createElement('li');
+      item.textContent = msg;
+      document.getElementById('messages').appendChild(item);
+    });
+
+    // Handle form submission
+    document.getElementById('form').addEventListener('submit', function(e) {
+      e.preventDefault();  // Prevents the form from submitting the traditional way
+
+      const input = document.getElementById('input');
+      const message = input.value;
+
+      if (message.trim()) {  // Check if the input is not empty or whitespace
+        // Emit a 'chat message' event to the server
+        socket.emit('chat message', message);
+        input.value = '';  // Clear the input field after sending the message
+      }
+    });
+  </script>
+</body>
+</html>
