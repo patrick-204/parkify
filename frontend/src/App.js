@@ -3,7 +3,7 @@ import './App.css';
 
 function App() {
   // Define the fetchPhotos function to be used as an event handler
-  const fetchPhotos = () => {
+  const fetchData = () => {
     fetch('http://localhost:8080/api/users')
       .then((res) => {
         if (!res.ok) {
@@ -23,7 +23,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <button onClick={fetchPhotos}>Fetch Photos</button>
+        <button onClick={fetchData}>Fetch Data</button>
       </header>
     </div>
   );
