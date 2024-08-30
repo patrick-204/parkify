@@ -97,7 +97,7 @@ app.use('/users', usersRoutes);
 app.use('/users', userRegistrationRoutes);
 // app.use('/login', userLoginRoutes);
 app.use('/api/user-login', userAuthRoutes);
-app.use('/logout', userLogoutRoutes);
+app.use('/api/user-logout', userLogoutRoutes);
 app.use('/api/vehicles', vehicleApiRoutes );
 app.use('/vehicles', vehiclesRoutes );
 app.use('/api/parking_spaces', parkingSpacesRoutes);

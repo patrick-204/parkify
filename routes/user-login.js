@@ -45,4 +45,13 @@ router.post('/', async (req, res) => {
   }
 });
 
+// Route to check login status
+router.get('/check-login', (req, res) => {
+  if (req.session.userId) {
+    res.json({ isLoggedIn: true });
+  } else {
+    res.json({ isLoggedIn: false });
+  }
+});
+
 module.exports = router;
