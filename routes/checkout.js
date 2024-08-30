@@ -50,17 +50,14 @@ router.get('/cancel', (req, res) => {
 
 router.post('/create-checkout-session', async (req, res) => {
   try {
-    // Forcing to parking spot id 1 for now
     const parkingSpotId = 1;
-    
     const result = await priceOfParking(parkingSpotId);
 
-    if (!result) {
-      return res.status(400).send('Price not found.');
+    if (!result || !result.amount) {
+      return res.status(400).json({ error: 'Price not found.' });
     }
 
-    const amountInDollars = result.amount; 
-    const amountInCents = Math.round(amountInDollars * 100); 
+    const amountInCents = Math.round(result.amount * 100);
 
     const session = await stripe.checkout.sessions.create({
       line_items: [
@@ -68,23 +65,24 @@ router.post('/create-checkout-session', async (req, res) => {
           price_data: {
             currency: 'cad',
             product_data: {
-              name: `Parking Spot ${parkingSpotId}`, // replace with parking spot name later
+              name: `Parking Spot ${parkingSpotId}`,
             },
-            unit_amount: amountInCents, 
+            unit_amount: amountInCents,
           },
           quantity: 1,
         },
       ],
       mode: 'payment',
-      success_url: 'http://localhost:8080/checkout/success',
-      cancel_url: 'http://localhost:8080/checkout/cancel',
+      success_url: 'http://localhost:3000/checkout/success',
+      cancel_url: 'http://localhost:3000/checkout/cancel',
     });
 
-    res.redirect(303, session.url);
+    res.json({ url: session.url });
   } catch (error) {
     console.error("Error creating checkout session:", error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 module.exports = router;

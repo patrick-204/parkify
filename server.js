@@ -102,7 +102,7 @@ app.use('/api/vehicles', vehicleApiRoutes );
 app.use('/vehicles', vehiclesRoutes );
 app.use('/api/parking_spaces', parkingSpacesRoutes);
 app.use('/api/reservations', reservationsRoutes);
-app.use('/checkout', paymentsRoutes);
+app.use('/api/checkout', paymentsRoutes);
 // Note: mount other resources here, using the same pattern above
 
 

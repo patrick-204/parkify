@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
+import CheckoutPage from './components/CheckoutPage';
+import SuccessPage from './components/SuccessPage';
+import CancelPage from './components/CancelPage';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -42,6 +45,9 @@ const App = () => {
         />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} /> 
+        <Route path="/checkout/success" element={<SuccessPage />} />
+        <Route path="/checkout/cancel" element={<CancelPage />} />
       </Routes>
     </Router>
   );
