@@ -5,17 +5,7 @@ const router = express.Router();
 const { doesUserExist } = require('../db/queries/does_user_exist');
 const { addUserToUsersDatabase } = require('../db/queries/add_user_to_users_db');
 
-router.get('/register', (req, res) => {
-  const parkifyUserID = req.session.userId;
-
-  if (!parkifyUserID) {
-    res.render('register'); 
-  } else {
-    res.redirect('/');
-  }
-});
-
-router.post('/register', (req, res) => {
+router.post('/', async (req, res) => {
   const { name, password, email, phoneNumber } = req.body;
 
   const errors = [];
@@ -33,29 +23,21 @@ router.post('/register', (req, res) => {
   }
 
   if (errors.length > 0) {
-    return res.render('register', { errors, name, email, phoneNumber });
+    return res.status(400).json({ errors });
   }
 
-  doesUserExist(name, email)
-    .then((userExists) => {
-      if (userExists) {
-        errors.push('User already exists.');
-        return res.status(409).render('register', { errors, name, email, phoneNumber });
-      }
+  try {
+    const userExists = await doesUserExist(name, email);
+    if (userExists) {
+      return res.status(409).json({ errors: ['User already exists.'] });
+    }
 
-      return addUserToUsersDatabase(name, password, email, phoneNumber);
-    })
-    .then((newUser) => {
-      // Setting user id for session to maybe use later
-      // req.session.userId = newUser.id; 
-      res.redirect("/login"); 
-    })
-    .catch((error) => {
-      console.error("Error adding user to users table:", error);
-      if (!res.headersSent) {
-        res.status(500).send("Internal Server Error");
-      }
-    });
+    await addUserToUsersDatabase(name, password, email, phoneNumber);
+    res.status(201).json({ message: 'User registered successfully.' });
+  } catch (error) {
+    console.error("Error adding user to users table:", error);
+    res.status(500).json({ errors: ['Internal Server Error'] });
+  }
 });
 
 module.exports = router;

@@ -1,4 +1,3 @@
-// src/RegisterPage.js
 import React, { useState } from 'react';
 
 const RegisterPage = () => {
@@ -17,13 +16,17 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Perform form validation and submission
+    // Perform form validation
     const errors = [];
+    if (!formData.name.trim()) errors.push('Name is required.');
     if (!formData.email || !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(formData.email)) {
       errors.push('A valid email is required.');
     }
     if (!formData.password || formData.password.length < 8) {
       errors.push('Password must be at least 8 characters long.');
+    }
+    if (formData.phoneNumber && !/^\d{10}$/.test(formData.phoneNumber)) {
+      errors.push('Phone number must be a 10-digit number.');
     }
 
     if (errors.length > 0) {
@@ -32,7 +35,7 @@ const RegisterPage = () => {
     }
 
     try {
-      const response = await fetch('/users/register', {
+      const response = await fetch('http://localhost:8080/api/users/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -41,8 +44,8 @@ const RegisterPage = () => {
       if (response.ok) {
         window.location.href = '/';
       } else {
-        const message = await response.text();
-        setErrors([message]);
+        const errorData = await response.json();
+        setErrors(errorData.errors || ['Internal Server Error']);
       }
     } catch (error) {
       console.error("Error during registration:", error);

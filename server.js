@@ -94,7 +94,7 @@ const paymentsRoutes = require('./routes/checkout');
 // Note: Endpoints that return data (eg. JSON) usually start with `/api`
 app.use('/api/users', userApiRoutes);
 app.use('/users', usersRoutes);
-app.use('/users', userRegistrationRoutes);
+app.use('/api/users/register', userRegistrationRoutes);
 // app.use('/login', userLoginRoutes);
 app.use('/api/user-login', userAuthRoutes);
 app.use('/api/user-logout', userLogoutRoutes);
