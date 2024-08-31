@@ -6,22 +6,46 @@ const ReservationsPage = () => {
   const [parkingSpaceId, setParkingSpaceId] = useState('');
   const [reservationStart, setReservationStart] = useState('');
   const [reservationEnd, setReservationEnd] = useState('');
+  const [userId, setUserId] = useState(null); // To store the logged-in user ID
 
-  // Fetch all reservations
-  const fetchReservations = async () => {
+  // Fetch user ID to filter reservations
+  const fetchUserId = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/reservations');
+      const response = await fetch('http://localhost:8080/api/user-login/check-login', {
+        credentials: 'include' // Ensure cookies are sent
+      });
       const data = await response.json();
-      setReservations(data);
+      if (data.isLoggedIn) {
+        setUserId(data.userId); // Set userId from response
+      } else {
+        console.error('User is not logged in.');
+      }
     } catch (error) {
-      console.error('Error fetching reservations:', error);
+      console.error('Error fetching user ID:', error);
+    }
+  };
+
+  // Fetch reservations for the logged-in user
+  const fetchReservations = async () => {
+    if (userId) {
+      try {
+        const response = await fetch(`http://localhost:8080/api/reservations/user/${userId}`, {
+          credentials: 'include' // Ensure cookies are sent
+        });
+        const data = await response.json();
+        setReservations(data);
+      } catch (error) {
+        console.error('Error fetching reservations:', error);
+      }
     }
   };
 
   // Fetch available parking spaces
   const fetchAvailableSpaces = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/reservations/parking-spaces');
+      const response = await fetch('http://localhost:8080/api/reservations/parking-spaces', {
+        credentials: 'include' // Ensure cookies are sent
+      });
       const data = await response.json();
       setAvailableSpaces(data);
     } catch (error) {
@@ -29,11 +53,13 @@ const ReservationsPage = () => {
     }
   };
 
-  // Fetch reservations and available spaces on component mount
+  // Fetch user ID and data on component mount
   useEffect(() => {
-    fetchReservations();
-    fetchAvailableSpaces();
-  }, []);
+    fetchUserId().then(() => {
+      fetchReservations();
+      fetchAvailableSpaces();
+    });
+  }, [userId]);
 
   // Handle form submission
   const handleSubmit = async (e) => {
