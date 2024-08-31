@@ -44,6 +44,10 @@ router.post('/', async (req, res) => {
   const { parkingSpaceId, reservationStart, reservationEnd } = req.body;
   const userId = req.session.userId; 
 
+  if (!userId) {
+    return res.status(401).json({ error: 'User not logged in' });
+  }
+
   try {
     await createNewReservation(userId, parkingSpaceId, reservationStart, reservationEnd);
     res.status(201).json({ message: 'Reservation created successfully.' });
@@ -52,5 +56,6 @@ router.post('/', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 module.exports = router;

@@ -45,6 +45,7 @@ const ReservationsPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include', // Ensure cookies are sent
         body: JSON.stringify({
           parkingSpaceId,
           reservationStart,

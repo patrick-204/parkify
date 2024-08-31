@@ -106,41 +106,16 @@ app.use('/api/checkout', paymentsRoutes);
 // Note: mount other resources here, using the same pattern above
 
 
-// React Implementation 
-/* app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend/build', 'index.html'));
+// Debug route
+app.get('/debug-session', (req, res) => {
+  res.json({
+    userId: req.session.userId,
+    email: req.session.email,
+    name: req.session.name,
+  });
 });
-*/ 
-
-
-app.get('/api/items', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM items'); // Example SQL query
-    res.json(result.rows);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
-
-
-
-// Home page
-// Warning: avoid creating more routes in this file!
-// Separate them into separate routes files (see above).
 
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-/* app.get('/', (req, res) => {
-  res.render('index');
-app.get('/', (req, res) => {
-  const isLoggedIn = req.session.userId !== undefined;
-  res.render('index', { isLoggedIn });
-});
-
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-*/ 

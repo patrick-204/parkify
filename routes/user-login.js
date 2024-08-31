@@ -34,6 +34,7 @@ router.post('/', async (req, res) => {
 
     // Set session or token
     req.session.userId = user.id;
+    console.log(req.session.userId);
     req.session.email = user.email;
     req.session.name = user.username;
 
