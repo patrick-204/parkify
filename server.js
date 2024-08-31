@@ -86,7 +86,7 @@ const userLogoutRoutes = require('./routes/user-logout');
 const parkingSpacesRoutes = require ('./routes/parking_spaces_api');
 const vehiclesRoutes = require ('./routes/vehicles');
 const vehicleApiRoutes = require ('./routes/vehicles-api');
-const reservationsRoutes = require ('./routes/reservations_api');
+const reservationsRoutes = require ('./routes/reservations');
 const paymentsRoutes = require('./routes/checkout');
 
 // Mount all resource routes

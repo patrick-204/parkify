@@ -6,6 +6,7 @@ import RegisterPage from './components/RegisterPage';
 import CheckoutPage from './components/CheckoutPage';
 import SuccessPage from './components/SuccessPage';
 import CancelPage from './components/CancelPage';
+import ReservationsPage from './components/ReservationsPage';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -48,6 +49,7 @@ const App = () => {
         <Route path="/checkout" element={<CheckoutPage />} /> 
         <Route path="/checkout/success" element={<SuccessPage />} />
         <Route path="/checkout/cancel" element={<CancelPage />} />
+        <Route path="/reservations" element={<ReservationsPage />} />
       </Routes>
     </Router>
   );
