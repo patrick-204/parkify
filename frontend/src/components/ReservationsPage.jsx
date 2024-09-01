@@ -150,22 +150,30 @@ const ReservationsPage = () => {
     dateStart.setHours(0, 0, 0, 0);
     const dateEnd = new Date(date);
     dateEnd.setHours(23, 59, 59, 999);
-
+  
     let disabledSlots = [];
     for (let hour = 0; hour < 24; hour++) {
-      const slotStart = addHours(dateStart, hour);
-      const slotEnd = addHours(dateStart, hour + 1);
-      if (isTimeSlotBooked(slotStart)) {
-        disabledSlots.push(slotStart);
+      for (let minute of [0, 30]) { // Check both 00 and 30 minutes of each hour
+        const slotStart = new Date(dateStart);
+        slotStart.setHours(hour, minute);
+        const slotEnd = new Date(slotStart);
+        slotEnd.setMinutes(slotEnd.getMinutes() + 30); // Half-hour slot
+  
+        if (isTimeSlotBooked(slotStart)) {
+          disabledSlots.push(slotStart);
+        }
       }
     }
     return disabledSlots;
   };
 
   const timeSlotDisabled = (time) => {
-    return filterTimeSlots(time).some(slot => slot.getTime() === time.getTime());
+    const timeHalfHour = new Date(time);
+    timeHalfHour.setSeconds(0, 0); // Ensure seconds and milliseconds are zeroed out
+  
+    return filterTimeSlots(time).some(slot => slot.getTime() === timeHalfHour.getTime());
   };
-
+  
   if (loading) {
     return <div>Loading...</div>; // Show loading message while fetching data
   }
@@ -190,6 +198,7 @@ const ReservationsPage = () => {
           selected={reservationStart}
           onChange={(date) => setReservationStart(date)}
           showTimeSelect
+          timeIntervals={30} // Set to 30 minutes for half-hour granularity
           dateFormat="Pp"
           filterTime={time => !timeSlotDisabled(time)}
           placeholderText="Select start date"
@@ -199,6 +208,7 @@ const ReservationsPage = () => {
           selected={reservationEnd}
           onChange={(date) => setReservationEnd(date)}
           showTimeSelect
+          timeIntervals={30} // Set to 30 minutes for half-hour granularity
           dateFormat="Pp"
           filterTime={time => !timeSlotDisabled(time)}
           placeholderText="Select end date"
