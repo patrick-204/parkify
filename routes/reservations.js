@@ -5,6 +5,7 @@ const { createNewReservation } = require('../db/queries/create_new_reservation')
 const { getReservations } = require('../db/queries/reservations');
 const { getReservationByUserId } = require('../db/queries/get_reservation_by_userID');
 const { isParkingSpotAvailable } = require('../db/queries/is_parking_space_available');
+const { getReservationsForParkingSpace } = require('../db/queries/getReservationsForParkingSpace');
 
 // Get all reservations
 router.get('/', async (req, res) => {
@@ -36,6 +37,19 @@ router.get('/parking-spaces', async (req, res) => {
     res.json(spaces);
   } catch (error) {
     console.error('Error fetching parking spaces:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Get reservations for a specific parking space
+router.get('/parking-space/:parkingSpaceId', async (req, res) => {
+  const parkingSpaceId = req.params.parkingSpaceId;
+
+  try {
+    const result = await getReservationsForParkingSpace(parkingSpaceId);
+    res.json(result);
+  } catch (error) {
+    console.error('Error fetching reservations for parking space:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
