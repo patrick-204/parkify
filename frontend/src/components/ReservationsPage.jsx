@@ -7,9 +7,20 @@ const ReservationsPage = () => {
   const [reservationStart, setReservationStart] = useState('');
   const [reservationEnd, setReservationEnd] = useState('');
   const [userId, setUserId] = useState(null);
-  const [loading, setLoading] = useState(true); 
+  const [errorMessage, setErrorMessage] = useState('');
+  const [validationError, setValidationError] = useState('');
 
-  // Fetch user ID to filter reservations
+  // Fetch user ID and reservations on component mount
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchUserId();
+      await fetchAvailableSpaces();
+      await fetchReservations();
+    };
+
+    fetchData();
+  }, [userId]);
+
   const fetchUserId = async () => {
     try {
       const response = await fetch('http://localhost:8080/api/user-login/check-login', {
@@ -26,7 +37,6 @@ const ReservationsPage = () => {
     }
   };
 
-  // Fetch reservations for the logged-in user
   const fetchReservations = async () => {
     if (userId) {
       try {
@@ -41,7 +51,6 @@ const ReservationsPage = () => {
     }
   };
 
-  // Fetch available parking spaces
   const fetchAvailableSpaces = async () => {
     try {
       const response = await fetch('http://localhost:8080/api/reservations/parking-spaces', {
@@ -54,23 +63,16 @@ const ReservationsPage = () => {
     }
   };
 
-  // Fetch user ID and data on component mount
-  useEffect(() => {
-    const fetchData = async () => {
-      await fetchUserId();
-      await fetchAvailableSpaces();
-      if (userId) {
-        await fetchReservations();
-      }
-      setLoading(false); 
-    };
-
-    fetchData();
-  }, [userId]); 
-
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage(''); // Clear previous errors
+    setValidationError(''); // Clear previous validation errors
+
+    // Validate that the end time is after the start time
+    if (new Date(reservationEnd) <= new Date(reservationStart)) {
+      setValidationError('End time must be after start time.');
+      return;
+    }
 
     try {
       const response = await fetch('http://localhost:8080/api/reservations', {
@@ -94,16 +96,14 @@ const ReservationsPage = () => {
         setReservationStart('');
         setReservationEnd('');
       } else {
-        console.error('Error creating reservation:', await response.text());
+        const errorData = await response.json();
+        setErrorMessage(errorData.error); // Display error message
       }
     } catch (error) {
       console.error('Error creating reservation:', error);
+      setErrorMessage('An error occurred while creating the reservation.');
     }
   };
-
-  if (loading) {
-    return <p>Loading...</p>; 
-  }
 
   return (
     <div>
@@ -135,6 +135,8 @@ const ReservationsPage = () => {
         />
         <button type="submit">Add Reservation</button>
       </form>
+      {validationError && <p className="error">{validationError}</p>}
+      {errorMessage && <p className="error">{errorMessage}</p>}
       <table>
         <thead>
           <tr>
