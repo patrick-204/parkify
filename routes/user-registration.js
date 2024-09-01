@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    const userExists = await doesUserExist(name, email);
+    const userExists = await doesUserExist(email);
     if (userExists) {
       return res.status(409).json({ errors: ['User already exists.'] });
     }

@@ -6,17 +6,18 @@ const ReservationsPage = () => {
   const [parkingSpaceId, setParkingSpaceId] = useState('');
   const [reservationStart, setReservationStart] = useState('');
   const [reservationEnd, setReservationEnd] = useState('');
-  const [userId, setUserId] = useState(null); // To store the logged-in user ID
+  const [userId, setUserId] = useState(null);
+  const [loading, setLoading] = useState(true); 
 
   // Fetch user ID to filter reservations
   const fetchUserId = async () => {
     try {
       const response = await fetch('http://localhost:8080/api/user-login/check-login', {
-        credentials: 'include' // Ensure cookies are sent
+        credentials: 'include'
       });
       const data = await response.json();
       if (data.isLoggedIn) {
-        setUserId(data.userId); // Set userId from response
+        setUserId(data.userId);
       } else {
         console.error('User is not logged in.');
       }
@@ -30,7 +31,7 @@ const ReservationsPage = () => {
     if (userId) {
       try {
         const response = await fetch(`http://localhost:8080/api/reservations/user/${userId}`, {
-          credentials: 'include' // Ensure cookies are sent
+          credentials: 'include'
         });
         const data = await response.json();
         setReservations(data);
@@ -44,7 +45,7 @@ const ReservationsPage = () => {
   const fetchAvailableSpaces = async () => {
     try {
       const response = await fetch('http://localhost:8080/api/reservations/parking-spaces', {
-        credentials: 'include' // Ensure cookies are sent
+        credentials: 'include'
       });
       const data = await response.json();
       setAvailableSpaces(data);
@@ -55,11 +56,17 @@ const ReservationsPage = () => {
 
   // Fetch user ID and data on component mount
   useEffect(() => {
-    fetchUserId().then(() => {
-      fetchReservations();
-      fetchAvailableSpaces();
-    });
-  }, [userId]);
+    const fetchData = async () => {
+      await fetchUserId();
+      await fetchAvailableSpaces();
+      if (userId) {
+        await fetchReservations();
+      }
+      setLoading(false); 
+    };
+
+    fetchData();
+  }, [userId]); 
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -71,7 +78,7 @@ const ReservationsPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include', // Ensure cookies are sent
+        credentials: 'include',
         body: JSON.stringify({
           parkingSpaceId,
           reservationStart,
@@ -80,8 +87,12 @@ const ReservationsPage = () => {
       });
 
       if (response.ok) {
-        // Refresh reservations list
-        fetchReservations();
+        // Refresh reservations list after adding a new reservation
+        await fetchReservations();
+        // Clear form fields after successful submission
+        setParkingSpaceId('');
+        setReservationStart('');
+        setReservationEnd('');
       } else {
         console.error('Error creating reservation:', await response.text());
       }
@@ -89,6 +100,10 @@ const ReservationsPage = () => {
       console.error('Error creating reservation:', error);
     }
   };
+
+  if (loading) {
+    return <p>Loading...</p>; 
+  }
 
   return (
     <div>
@@ -131,15 +146,21 @@ const ReservationsPage = () => {
           </tr>
         </thead>
         <tbody>
-          {reservations.map(reservation => (
-            <tr key={reservation.id}>
-              <td>{reservation.id}</td>
-              <td>{reservation.user_id}</td>
-              <td>{reservation.parking_space_id}</td>
-              <td>{new Date(reservation.reservation_start).toLocaleString()}</td>
-              <td>{new Date(reservation.reservation_end).toLocaleString()}</td>
+          {reservations.length > 0 ? (
+            reservations.map(reservation => (
+              <tr key={reservation.id}>
+                <td>{reservation.id}</td>
+                <td>{reservation.user_id}</td>
+                <td>{reservation.parking_space_id}</td>
+                <td>{new Date(reservation.reservation_start).toLocaleString()}</td>
+                <td>{new Date(reservation.reservation_end).toLocaleString()}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="5">No reservations found.</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

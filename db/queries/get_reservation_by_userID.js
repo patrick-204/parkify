@@ -13,6 +13,7 @@ const getReservationByUserId = function(userId) {
   return pool
     .query(queryString, [userId])
     .then((result) => {
+      console.log('get by res id', result.rows);
       return result.rows; // Return an array of reservations (can be empty if no reservations found)
     })
     .catch((err) => {

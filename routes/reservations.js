@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 // Get reservations by user ID
 router.get('/user/:userId', async (req, res) => {
   try {
-    const { userId } = req.params;
+    const userId = req.session.userId;
     const result = await getReservationByUserId(userId);
     res.json(result);
   } catch (error) {

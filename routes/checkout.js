@@ -39,15 +39,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-
-router.get('/success', (req, res) => {
-  res.render('success');
-});
-
-router.get('/cancel', (req, res) => {
-  res.render('cancel');
-});
-
 router.post('/create-checkout-session', async (req, res) => {
   try {
     const parkingSpotId = 1;

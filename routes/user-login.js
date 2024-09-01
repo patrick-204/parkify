@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
 
     // Set session or token
     req.session.userId = user.id;
-    console.log(req.session.userId);
+    // console.log(req.session.userId);
     req.session.email = user.email;
     req.session.name = user.username;
 
@@ -49,7 +49,7 @@ router.post('/', async (req, res) => {
 // Route to check login status
 router.get('/check-login', (req, res) => {
   if (req.session.userId) {
-    res.json({ isLoggedIn: true });
+    res.json({ isLoggedIn: true, userId: req.session.userId });
   } else {
     res.json({ isLoggedIn: false });
   }

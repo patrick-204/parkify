@@ -70,7 +70,7 @@ app.use(
   cookieSession({
     name: "session",
     keys: ["secret"],
-    secure: false // Make sure this is false in development
+    secure: false 
   })
 );
 
