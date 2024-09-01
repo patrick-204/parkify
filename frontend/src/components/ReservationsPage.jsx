@@ -7,8 +7,7 @@ const ReservationsPage = () => {
   const [reservationStart, setReservationStart] = useState('');
   const [reservationEnd, setReservationEnd] = useState('');
   const [userId, setUserId] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [validationError, setValidationError] = useState('');
+  const [errorMessage, setErrorMessage] = useState(''); // State to store error message
 
   // Fetch user ID and reservations on component mount
   useEffect(() => {
@@ -66,11 +65,9 @@ const ReservationsPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage(''); // Clear previous errors
-    setValidationError(''); // Clear previous validation errors
 
-    // Validate that the end time is after the start time
     if (new Date(reservationEnd) <= new Date(reservationStart)) {
-      setValidationError('End time must be after start time.');
+      setErrorMessage('End time must be after start time.');
       return;
     }
 
@@ -89,9 +86,7 @@ const ReservationsPage = () => {
       });
 
       if (response.ok) {
-        // Refresh reservations list after adding a new reservation
         await fetchReservations();
-        // Clear form fields after successful submission
         setParkingSpaceId('');
         setReservationStart('');
         setReservationEnd('');
@@ -135,7 +130,6 @@ const ReservationsPage = () => {
         />
         <button type="submit">Add Reservation</button>
       </form>
-      {validationError && <p className="error">{validationError}</p>}
       {errorMessage && <p className="error">{errorMessage}</p>}
       <table>
         <thead>
