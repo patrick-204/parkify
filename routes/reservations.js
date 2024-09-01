@@ -4,6 +4,7 @@ const { getParkingSpaces } = require('../db/queries/parking_spaces');
 const { createNewReservation } = require('../db/queries/create_new_reservation');
 const { getReservations } = require('../db/queries/reservations');
 const { getReservationByUserId } = require('../db/queries/get_reservation_by_userID');
+const { isParkingSpotAvailable } = require('../db/queries/is_parking_space_available');
 
 // Get all reservations
 router.get('/', async (req, res) => {
@@ -48,6 +49,14 @@ router.post('/', async (req, res) => {
     return res.status(401).json({ error: 'User not logged in' });
   }
 
+  // Check if the parking spot is available
+  const isAvailable = await isParkingSpotAvailable(parkingSpaceId, reservationStart, reservationEnd);
+
+  if (!isAvailable) {
+    // Send a specific error response for reservation conflict
+    return res.status(409).json({ error: 'Parking spot is already reserved during this time.' });
+  }
+
   try {
     await createNewReservation(userId, parkingSpaceId, reservationStart, reservationEnd);
     res.status(201).json({ message: 'Reservation created successfully.' });
@@ -56,6 +65,5 @@ router.post('/', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
 
 module.exports = router;

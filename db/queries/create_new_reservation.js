@@ -3,7 +3,7 @@ const pool = require('../connection');
 /**
  * Create a new reservation in the database.
  */
-const createNewReservation = function(userId, parkingSpaceId, reservationStart, reservationEnd) {
+const createNewReservation = async (userId, parkingSpaceId, reservationStart, reservationEnd) => {
   const queryString = `
     INSERT INTO reservations (user_id, parking_space_id, reservation_start, reservation_end) 
     VALUES ($1, $2, $3, $4);
