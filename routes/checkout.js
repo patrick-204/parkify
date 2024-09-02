@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
 const stripe = require('stripe')('sk_test_51PjqBV072KK9cj5n1SJAd3mzXSH1KlHi4K4DbXp4nE0dT6PuCMf55PbfN8DD7iFfE9edaylAhJEqBikQ7ui7NrKn001H3IQd2L');
-
 const { priceOfParking } = require('../db/queries/price_of_parking');
 
 // Here for test - remove later
@@ -13,36 +11,28 @@ const { priceOfParking } = require('../db/queries/price_of_parking');
 // Payment is declined
 // 4000 0000 0000 9995
 
-router.get('/', async (req, res) => {
+// Endpoint to fetch the price
+router.get('/parking/:id', async (req, res) => {
   try {
-    // Forcing to parking spot id 1 for now
-    const parkingSpotId = 1; 
-
+    const parkingSpotId = parseInt(req.params.id);
     const result = await priceOfParking(parkingSpotId);
 
     if (!result || !result.amount) {
-      return res.status(400).send('Price not found.');
+      return res.status(400).json({ error: 'Price not found.' });
     }
 
-    const amountInDollars = Number(result.amount);
-
-    if (isNaN(amountInDollars)) {
-      throw new Error("Invalid amount value");
-    }
-
-    const formattedPrice = amountInDollars.toFixed(2); 
-
-    res.render('checkout', { price: formattedPrice, parkingSpotId });
+    res.json({ price: result.amount });
   } catch (error) {
     console.error("Error retrieving price:", error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
+// Create checkout session
 router.post('/create-checkout-session', async (req, res) => {
   try {
-    const parkingSpotId = 1;
-    const result = await priceOfParking(parkingSpotId);
+    const { parkingSpaceId } = req.body;
+    const result = await priceOfParking(parkingSpaceId);
 
     if (!result || !result.amount) {
       return res.status(400).json({ error: 'Price not found.' });
@@ -56,7 +46,7 @@ router.post('/create-checkout-session', async (req, res) => {
           price_data: {
             currency: 'cad',
             product_data: {
-              name: `Parking Spot ${parkingSpotId}`,
+              name: `Parking Spot ${parkingSpaceId}`,
             },
             unit_amount: amountInCents,
           },
@@ -74,6 +64,5 @@ router.post('/create-checkout-session', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
 
 module.exports = router;

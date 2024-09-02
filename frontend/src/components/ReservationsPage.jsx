@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { addHours, isWithinInterval, format } from 'date-fns';
@@ -34,6 +35,7 @@ const ReservationsPage = () => {
   const [reservedPeriods, setReservedPeriods] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(true); 
+  const navigate = useNavigate(); 
 
   // Fetch user ID and available parking spaces on component mount
   useEffect(() => {
@@ -118,7 +120,7 @@ const ReservationsPage = () => {
       } catch (error) {
         console.error('Error fetching reservations:', error);
       } finally {
-        setLoading(false); // Set loading to false after fetching data
+        setLoading(false); 
       }
     }
   };
@@ -147,12 +149,8 @@ const ReservationsPage = () => {
       });
 
       if (response.ok) {
-        // Refresh reservations list after adding a new reservation
-        await fetchReservations(); 
-        setParkingSpaceId('');
-        setReservationStart(null);
-        setReservationEnd(null);
-        setErrorMessage('');
+        // Redirect to the CheckoutPage with parkingSpaceId
+        navigate(`/checkout/parking/${parkingSpaceId}`);
       } else {
         const errorData = await response.json();
         setErrorMessage(errorData.error || 'Error creating reservation.');
