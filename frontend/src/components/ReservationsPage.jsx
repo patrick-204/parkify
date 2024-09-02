@@ -1,7 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import { addHours, isWithinInterval } from 'date-fns';
+import { addHours, isWithinInterval, format } from 'date-fns';
+
+// Convert local time to UTC
+const localToUTC = (localDate) => {
+  if (!localDate) return null;
+  // Offset in milliseconds
+  const offset = localDate.getTimezoneOffset() * 60000;
+  return new Date(localDate.getTime() - offset);
+};
+
+// Convert UTC to local time
+const utcToLocal = (utcDate) => {
+  if (!utcDate) return null;
+  // Offset in milliseconds
+  const offset = utcDate.getTimezoneOffset() * 60000;
+  return new Date(utcDate.getTime() + offset);
+};
+
+// Format date and time to 12-hour format
+const formatTo12Hour = (date) => {
+  return format(date, "MM/dd/yyyy h:mm a"); // Format in 12-hour format with AM/PM
+};
 
 const ReservationsPage = () => {
   const [reservations, setReservations] = useState([]);
@@ -69,13 +90,17 @@ const ReservationsPage = () => {
   };
 
   // Fetch reserved periods
-  const fetchReservedPeriods = async (spaceId) => {
+  const fetchReservedPeriods = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/reservations/parking-space/${spaceId}`, {
+      const response = await fetch('http://localhost:8080/api/reservations', {
         credentials: 'include'
       });
       const data = await response.json();
-      setReservedPeriods(data);
+      setReservedPeriods(data.map(period => ({
+        ...period,
+        reservation_start: utcToLocal(new Date(period.reservation_start)),
+        reservation_end: utcToLocal(new Date(period.reservation_end)),
+      })));
     } catch (error) {
       console.error('Error fetching reserved periods:', error);
     }
@@ -116,8 +141,8 @@ const ReservationsPage = () => {
         credentials: 'include',
         body: JSON.stringify({
           parkingSpaceId,
-          reservationStart,
-          reservationEnd
+          reservationStart: localToUTC(reservationStart),
+          reservationEnd: localToUTC(reservationEnd)
         }),
       });
 
@@ -173,7 +198,7 @@ const ReservationsPage = () => {
   
     return filterTimeSlots(time).some(slot => slot.getTime() === timeHalfHour.getTime());
   };
-  
+
   if (loading) {
     return <div>Loading...</div>; // Show loading message while fetching data
   }
@@ -198,8 +223,8 @@ const ReservationsPage = () => {
           selected={reservationStart}
           onChange={(date) => setReservationStart(date)}
           showTimeSelect
-          timeIntervals={30} // Set to 30 minutes for half-hour granularity
-          dateFormat="Pp"
+          timeIntervals={30}
+          dateFormat="MM/dd/yyyy h:mm a" // Display in 12-hour format
           filterTime={time => !timeSlotDisabled(time)}
           placeholderText="Select start date"
           required
@@ -208,8 +233,8 @@ const ReservationsPage = () => {
           selected={reservationEnd}
           onChange={(date) => setReservationEnd(date)}
           showTimeSelect
-          timeIntervals={30} // Set to 30 minutes for half-hour granularity
-          dateFormat="Pp"
+          timeIntervals={30}
+          dateFormat="MM/dd/yyyy h:mm a" // Display in 12-hour format
           filterTime={time => !timeSlotDisabled(time)}
           placeholderText="Select end date"
           required
@@ -234,8 +259,8 @@ const ReservationsPage = () => {
                 <td>{reservation.id}</td>
                 <td>{reservation.user_id}</td>
                 <td>{reservation.parking_space_id}</td>
-                <td>{new Date(reservation.reservation_start).toLocaleString()}</td>
-                <td>{new Date(reservation.reservation_end).toLocaleString()}</td>
+                <td>{formatTo12Hour(new Date(reservation.reservation_start))}</td>
+                <td>{formatTo12Hour(new Date(reservation.reservation_end))}</td>
               </tr>
             ))
           ) : (
