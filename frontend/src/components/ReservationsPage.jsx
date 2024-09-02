@@ -164,8 +164,8 @@ const ReservationsPage = () => {
 
   const isTimeSlotBooked = (date) => {
     return reservedPeriods.some(period => {
-      const periodStart = new Date(period.reservation_start);
-      const periodEnd = new Date(period.reservation_end);
+      const periodStart = localToUTC(new Date(period.reservation_start));
+      const periodEnd = localToUTC(new Date(period.reservation_end));
       return isWithinInterval(date, { start: periodStart, end: periodEnd });
     });
   };
@@ -200,7 +200,7 @@ const ReservationsPage = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Show loading message while fetching data
+    return <div>Loading...</div>;
   }
 
   return (
