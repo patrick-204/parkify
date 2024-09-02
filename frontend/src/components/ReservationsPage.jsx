@@ -21,7 +21,7 @@ const utcToLocal = (utcDate) => {
 
 // Format date and time to 12-hour format
 const formatTo12Hour = (date) => {
-  return format(date, "MM/dd/yyyy h:mm a"); // Format in 12-hour format with AM/PM
+  return format(date, "MM/dd/yyyy h:mm a"); 
 };
 
 const ReservationsPage = () => {
@@ -33,7 +33,7 @@ const ReservationsPage = () => {
   const [userId, setUserId] = useState(null);
   const [reservedPeriods, setReservedPeriods] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true); 
 
   // Fetch user ID and available parking spaces on component mount
   useEffect(() => {
@@ -147,7 +147,8 @@ const ReservationsPage = () => {
       });
 
       if (response.ok) {
-        await fetchReservations(); // Refresh reservations list after adding a new reservation
+        // Refresh reservations list after adding a new reservation
+        await fetchReservations(); 
         setParkingSpaceId('');
         setReservationStart(null);
         setReservationEnd(null);
@@ -178,11 +179,13 @@ const ReservationsPage = () => {
   
     let disabledSlots = [];
     for (let hour = 0; hour < 24; hour++) {
-      for (let minute of [0, 30]) { // Check both 00 and 30 minutes of each hour
+      // Check both 00 and 30 minutes of each hour
+      for (let minute of [0, 30]) { 
         const slotStart = new Date(dateStart);
         slotStart.setHours(hour, minute);
         const slotEnd = new Date(slotStart);
-        slotEnd.setMinutes(slotEnd.getMinutes() + 30); // Half-hour slot
+        // Half-hour slot
+        slotEnd.setMinutes(slotEnd.getMinutes() + 30); 
   
         if (isTimeSlotBooked(slotStart)) {
           disabledSlots.push(slotStart);
@@ -194,7 +197,8 @@ const ReservationsPage = () => {
 
   const timeSlotDisabled = (time) => {
     const timeHalfHour = new Date(time);
-    timeHalfHour.setSeconds(0, 0); // Ensure seconds and milliseconds are zeroed out
+    // Ensure seconds and milliseconds are zeroed out
+    timeHalfHour.setSeconds(0, 0); 
   
     return filterTimeSlots(time).some(slot => slot.getTime() === timeHalfHour.getTime());
   };
@@ -224,7 +228,7 @@ const ReservationsPage = () => {
           onChange={(date) => setReservationStart(date)}
           showTimeSelect
           timeIntervals={30}
-          dateFormat="MM/dd/yyyy h:mm a" // Display in 12-hour format
+          dateFormat="MM/dd/yyyy h:mm a" 
           filterTime={time => !timeSlotDisabled(time)}
           placeholderText="Select start date"
           required
@@ -234,7 +238,7 @@ const ReservationsPage = () => {
           onChange={(date) => setReservationEnd(date)}
           showTimeSelect
           timeIntervals={30}
-          dateFormat="MM/dd/yyyy h:mm a" // Display in 12-hour format
+          dateFormat="MM/dd/yyyy h:mm a" 
           filterTime={time => !timeSlotDisabled(time)}
           placeholderText="Select end date"
           required
