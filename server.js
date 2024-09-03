@@ -79,7 +79,7 @@ const usersRoutes = require('./routes/users');
 const userRegistrationRoutes = require('./routes/user-registration');
 const userLoginRoutes = require('./routes/user-login');
 const userLogoutRoutes = require('./routes/user-logout');
-const parkingSpacesRoutes = require ('./routes/parking_spaces_api');
+const parkingSpaceRoutes = require ('./routes/parkingSpaceRoutes');
 const vehiclesRoutes = require ('./routes/vehicles');
 const vehicleApiRoutes = require ('./routes/vehicles-api');
 const reservationsRoutes = require ('./routes/reservations_api');
@@ -95,7 +95,7 @@ app.use('/login', userLoginRoutes);
 app.use('/logout', userLogoutRoutes);
 app.use('/api/vehicles', vehicleApiRoutes );
 app.use('/vehicles', vehiclesRoutes );
-app.use('/api/parking_spaces', parkingSpacesRoutes);
+app.use('/parkingSpaces', parkingSpaceRoutes);
 app.use('/api/reservations', reservationsRoutes);
 app.use('/checkout', paymentsRoutes);
 // Note: mount other resources here, using the same pattern above
