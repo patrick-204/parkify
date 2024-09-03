@@ -3,20 +3,6 @@ import axios from "axios";
 import { CircularProgress,Grid,Typography,InputLabel,MenuItem,FormControl, Select } from "@material-ui/core";
 import useStyles from './styles'
 import PlaceDetails from '../PlaceDetails/PlaceDetails'
-const places = [
-  {name:'Parkings 1'},
-  {name:'Parkings 2'},
-  {name:'Parkings 3'},
-  {name:'Parkings 4'},
-  {name:'Parkings 5'},
-  {name:'Parkings 6'},
-  {name:'Parkings 7'},
-  {name:'Parkings 8'},
-  {name:'Parkings 9'},
-  {name:'Parkings 10'},
-  {name:'Parkings 11'},
-
-];
 
 const List = () => {
   const classes=useStyles();
