@@ -1,45 +1,62 @@
-import React from 'react';
-import './App.css';
+import React, { useEffect,useState } from "react";
+import {CssBaseline, Grid } from '@material-ui/core'
 
-function App() {
-  // Define the fetchPhotos function to be used as an event handler
-  const fetchData = () => {
-    fetch('http://localhost:8080/api/users')
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! Status: ${res.status}`);
-        }
-        return res.json();
-      })
+import { getLocationsData } from "./api/api";
+import Header from "./components/Header/Header"
+import List from "./components/List/List"
+import Map from "./components/Map/Map"
+import MapContainer from "./components/MapContainer/MapContainer";
+
+
+const App = () => {
+  const [postalCodes, setPostalCodes] = useState([]);
+  const [parkingSpaces,setParkingSpaces] = useState([])
+  const [currentLocation, setCurrentLocation] = useState(null);
+
+
+  useEffect(() => {
+    getLocationsData()
       .then((data) => {
-        console.log('Data received from backend:', data);
+        const response =data.data.parkingSpaces
+        // console.log(data.data.parkingSpaces);
+        // console.log(response.map(code => {code.location}))
+        setParkingSpaces(response);
       })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
-  };
+  },[])
 
-  // Return the JSX for rendering the component
+  useEffect(()=>{
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const {latitude, longitude} = position.coords;
+          setCurrentLocation({lat:latitude, lng:longitude});
+        },
+        (error) => {
+          console.error("Error fetching location:", error);
+        }
+      );
+
+    }else {
+      console.log("Geolocation is not supported by this browser")
+    }
+  },[]);
+
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <button onClick={fetchData}>Fetch Data</button>
-      </header>
-    </div>
-  );
+    <>
+      <CssBaseline />
+      <Header />
+      <Grid container spacing={3} style={{width:'100%'}}>
+        <Grid  item xs={12} md={4}>
+              <List />
+        </Grid>
+        <Grid  item xs={12} md={8}>
+              <MapContainer parkingSpaces={parkingSpaces} currentLocation={currentLocation}/>
+        </Grid>
+
+      </Grid>
+    </>
+  )
 }
-
 export default App;
-
-/* useEffect(() => {
-  fetch('http://localhost:8080/users')
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data); 
-    })
-    .catch((error) => {
-      console.error('Error fetching photos:', error);
-    });
-}, []);
-
-*/ 
