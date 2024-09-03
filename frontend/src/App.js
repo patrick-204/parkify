@@ -5,7 +5,7 @@ import { getLocationsData } from "./api/api";
 import Header from "./components/Header/Header"
 import List from "./components/List/List"
 import Map from "./components/Map/Map"
-import MapContainer from "./components/MapContainer/MapContainer";
+
 
 
 const App = () => {
@@ -52,7 +52,7 @@ const App = () => {
               <List />
         </Grid>
         <Grid  item xs={12} md={8}>
-              <MapContainer parkingSpaces={parkingSpaces} currentLocation={currentLocation}/>
+              <Map parkingSpaces={parkingSpaces} currentLocation={currentLocation}/>
         </Grid>
 
       </Grid>
