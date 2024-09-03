@@ -125,42 +125,6 @@ const ReservationsPage = () => {
     }
   };
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!reservationStart || !reservationEnd || reservationStart >= reservationEnd) {
-      setErrorMessage('Invalid reservation dates.');
-      return;
-    }
-
-    try {
-      const response = await fetch('http://localhost:8080/api/reservations', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          parkingSpaceId,
-          reservationStart: localToUTC(reservationStart),
-          reservationEnd: localToUTC(reservationEnd)
-        }),
-      });
-
-      if (response.ok) {
-        // Redirect to the CheckoutPage with parkingSpaceId
-        navigate(`/checkout/parking/${parkingSpaceId}`);
-      } else {
-        const errorData = await response.json();
-        setErrorMessage(errorData.error || 'Error creating reservation.');
-      }
-    } catch (error) {
-      console.error('Error creating reservation:', error);
-      setErrorMessage('Error creating reservation.');
-    }
-  };
-
   const isTimeSlotBooked = (date) => {
     return reservedPeriods.some(period => {
       const periodStart = localToUTC(new Date(period.reservation_start));
@@ -204,6 +168,42 @@ const ReservationsPage = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    if (!reservationStart || !reservationEnd || reservationStart >= reservationEnd) {
+      setErrorMessage('Invalid reservation dates.');
+      return;
+    }
+  
+    try {
+      const response = await fetch('http://localhost:8080/api/checkout/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          parkingSpaceId,
+          reservationStart: localToUTC(reservationStart),
+          reservationEnd: localToUTC(reservationEnd),
+        }),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        window.location.href = data.url; // Redirect to Stripe Checkout
+      } else {
+        const errorData = await response.json();
+        setErrorMessage(errorData.error || 'Error creating checkout session.');
+      }
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+      setErrorMessage('Error creating checkout session.');
+    }
+  };
 
   return (
     <div>

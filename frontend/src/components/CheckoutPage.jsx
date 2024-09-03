@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 
 const CheckoutPage = () => {
-  // Get parkingSpaceId from URL
-  const { parkingSpaceId } = useParams(); 
+  const { parkingSpaceId } = useParams();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const reservationStart = queryParams.get('start');
+  const reservationEnd = queryParams.get('end');
   const [price, setPrice] = useState(null);
 
   useEffect(() => {
@@ -32,7 +35,11 @@ const CheckoutPage = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ parkingSpaceId }),
+        body: JSON.stringify({
+          parkingSpaceId,
+          reservationStart,
+          reservationEnd
+        }),
       });
 
       if (response.ok) {
