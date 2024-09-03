@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const LoginPage = () => {
+const LoginPage = ({ isLoggedIn }) => { 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(null);
+  const navigate = useNavigate(); 
+
+  // If the user is already logged in then redirect to homepage
+  if (isLoggedIn) {
+    navigate('/');
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -15,20 +22,16 @@ const LoginPage = () => {
         { email, password }, 
         { 
           headers: { 'Content-Type': 'application/json' },
-          withCredentials: true // Include this option
+          withCredentials: true 
         }
       );      
       setMessage(response.data.message);
-      // Handle successful login (e.g., redirect, set user state)
     } catch (error) {
       if (error.response) {
-        // Request made and server responded with a status code not in the range of 2xx
         setError(error.response.data.error);
       } else if (error.request) {
-        // The request was made but no response was received
         setError('No response from server.');
       } else {
-        // Something happened in setting up the request
         setError('Error in making request.');
       }
     }

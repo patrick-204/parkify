@@ -44,7 +44,7 @@ const App = () => {
           path="/"
           element={<HomePage isLoggedIn={isLoggedIn} onLogout={handleLogout} />}
         />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage isLoggedIn={isLoggedIn} />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/checkout/parking/:parkingSpaceId" element={<CheckoutPage />} /> 
         <Route path="/checkout/success" element={<SuccessPage />} />
