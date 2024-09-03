@@ -1,16 +1,16 @@
 const pool = require('../connection');
 
 /**
- * Create a new reservation in the database.
+ * Create new reservation
  */
-const createNewReservation = async (userId, parkingSpaceId, reservationStart, reservationEnd) => {
+const createNewReservation = async (userId, parkingSpaceId, reservationStart, reservationEnd, status) => {
   const queryString = `
-    INSERT INTO reservations (user_id, parking_space_id, reservation_start, reservation_end) 
-    VALUES ($1, $2, $3, $4);
+    INSERT INTO reservations (user_id, parking_space_id, reservation_start, reservation_end, status) 
+    VALUES ($1, $2, $3, $4, $5);
   `;
 
   return pool
-    .query(queryString, [userId, parkingSpaceId, reservationStart, reservationEnd])
+    .query(queryString, [userId, parkingSpaceId, reservationStart, reservationEnd, status])
     .then(() => {
     })
     .catch((err) => {

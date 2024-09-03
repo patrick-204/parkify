@@ -26,7 +26,7 @@ const App = () => {
     checkLoginStatus();
   }, []);
 
-  // Handle user logout
+  // User logout
   const handleLogout = async () => {
     try {
       await fetch('http://localhost:8080/api/user-logout', { method: 'POST', credentials: 'include' });

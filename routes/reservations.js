@@ -56,30 +56,6 @@ router.get('/parking-space/:parkingSpaceId', async (req, res) => {
 });
 
 // Create a new reservation
-// router.post('/', async (req, res) => {
-//   const { parkingSpaceId, reservationStart, reservationEnd } = req.body;
-//   const userId = req.session.userId; 
-
-//   if (!userId) {
-//     return res.status(401).json({ error: 'User not logged in' });
-//   }
-
-//   // Check if the parking spot is available
-//   const isAvailable = await isParkingSpotAvailable(parkingSpaceId, reservationStart, reservationEnd);
-
-//   if (!isAvailable) {
-//     // Send a specific error response for reservation conflict
-//     return res.status(409).json({ error: 'Parking spot is already reserved during this time.' });
-//   }
-
-//   try {
-//     await createNewReservation(userId, parkingSpaceId, reservationStart, reservationEnd);
-//     res.status(201).json({ message: 'Reservation created successfully.' });
-//   } catch (error) {
-//     console.error('Error creating reservation:', error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// });
 router.post('/', async (req, res) => {
   const { parkingSpaceId, reservationStart, reservationEnd } = req.body;
   const userId = req.session.userId; 
@@ -97,10 +73,8 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    await db.query(
-      'INSERT INTO reservations (user_id, parking_space_id, reservation_start, reservation_end, status) VALUES ($1, $2, $3, $4, $5)',
-      [userId, parkingSpaceId, reservationStart, reservationEnd, 'confirmed']
-    );
+    await createNewReservation(userId, parkingSpaceId, reservationStart, reservationEnd, 'confirmed');
+    
     res.status(201).json({ success: true });
   } catch (error) {
     console.error('Error creating reservation:', error);
@@ -109,7 +83,7 @@ router.post('/', async (req, res) => {
 });
 
 
-// todo()
+// todo() - If have time will add this so duplicate reservations cannot take place
 // Create a pending reservation
 router.post('/pending', async (req, res) => {
   const { parkingSpaceId, reservationStart, reservationEnd } = req.body;
