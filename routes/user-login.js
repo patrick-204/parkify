@@ -1,21 +1,12 @@
 const express = require('express');
 const router = express.Router();
-
 const { getUserWithEmail } = require('../db/queries/get_user_by_email');
 
-router.get('/', (req, res) => {
-  const parkifyUserID = req.session.userId;
-
-  if (parkifyUserID) {
-    res.redirect("/");
-  }
-
-  res.render("login");
-});
-
-router.post('/', (req, res) => {
+// Handle user login
+router.post('/', async (req, res) => {
   const { email, password } = req.body;
 
+  // Validate input
   const errors = [];
   if (!email || !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(email)) {
     errors.push('A valid email is required.');
@@ -24,38 +15,44 @@ router.post('/', (req, res) => {
     errors.push('Password must be at least 8 characters long.');
   }
 
+  // Return errors if any
   if (errors.length > 0) {
-    return res.render('login', { email, errors });
+    return res.status(400).json({ errors });
   }
 
-  getUserWithEmail(email)
-  .then((user) => {
-    // If a user with the login email cannot be found, then return response with status 403
+  try {
+    // Get user from database
+    const user = await getUserWithEmail(email);
     if (!user) {
-      return res.status(403).send("Email not found: Please create an account or enter the correct email");
+      return res.status(403).json({ error: 'Email not found: Please create an account or enter the correct email' });
     }
 
-    // If a user that matches the email is found, then verify the password entered by the user
-    // matches what is stored
+    // Compare password with stored password (plaintext comparison)
     if (password !== user.password) {
-      return res.status(403).send("Incorrect Password. Try Again.");
+      return res.status(403).json({ error: 'Incorrect Password. Try Again.' });
     }
 
-    // Set a cookie inside the session object to the value of the user's ID
+    // Set session or token
     req.session.userId = user.id;
-
-    // Set other required cookies
+    // console.log(req.session.userId);
     req.session.email = user.email;
     req.session.name = user.username;
 
-    res.redirect("/");
-  })
-  .catch((error) => {
+    // Send success response
+    res.status(200).json({ message: 'Login successful.' });
+  } catch (error) {
     console.error("Error during login:", error);
-    res.status(500).send("Internal Server Error");
-  });
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
-
+// Route to check login status
+router.get('/check-login', (req, res) => {
+  if (req.session.userId) {
+    res.json({ isLoggedIn: true, userId: req.session.userId });
+  } else {
+    res.json({ isLoggedIn: false });
+  }
 });
 
 module.exports = router;

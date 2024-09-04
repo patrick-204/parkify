@@ -3,8 +3,8 @@ const router = express.Router();
 
 router.post('/', (req, res) => {
   req.session = null;
-  res.clearCookie("session");
-  res.redirect("/login");
+  res.clearCookie('session', { path: '/' }); 
+  res.status(200).json({ message: 'Logout successful.' });
 });
 
 module.exports = router;
