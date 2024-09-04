@@ -3,6 +3,9 @@ import { Autocomplete } from "@react-google-maps/api";
 import { AppBar,Toolbar, Typography, InputBase,Box, Button } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 
+
+import AddButton from "../AddButton/AddButton";
+
 import useStyles from './styles'
 
 const Header = () => {
@@ -10,18 +13,14 @@ const Header = () => {
   return(
     <AppBar position="static">
         <Toolbar className={classes.toolbar}>
-          <Typography variant="h5" className={classes.title}>
+          <Typography variant="h5" className={classes.title} style={{color:'red'}}>
             Parkify
 
 
           </Typography>
-          <div>
 
-          <Button className="classes.button" color="inherit" position="left" >
-            Add
-          </Button>
-          </div>
-          <Box display="flex">
+
+              <Box display="flex">
               <Typography variant="h6" className={classes.title}>
 
               </Typography>
@@ -32,14 +31,31 @@ const Header = () => {
                     </div>
                       <InputBase placeholder="Search..." classes={{root:classes.inputRoot, input:classes.inputInput}} />
                 </div>
-                <div display="flex" alignItems>
-                  <button>Signup</button>
-                  <button>Logout</button>
-                  <button>Login</button>
-                </div>
+
 
               {/* </Autocomplete> */}
           </Box>
+         
+          <Box display="flex" className="classes.button" >
+
+                <Button><AddButton/></Button>
+
+                  <Button
+                  variant="contained"
+                  style={{backgroundColor: '#3c3c3c', color:"red"}}
+                   onClick={() => window.location.href='/signup'}
+                   >Signup</Button>
+                  <Button
+                  variant="contained"
+                  style={{backgroundColor: '#3c3c3c', color:"red"}}
+                   onClick={() => window.location.href='/logout'}>
+                   Logout</Button>
+                  <Button
+                    variant="contained"
+                    style={{backgroundColor: '#3c3c3c', color:"red"}}
+                     onClick={() => window.location.href='/login'}
+                  >Login</Button>
+           </Box>
 
         </Toolbar>
 

@@ -28,7 +28,8 @@ const List = () => {
 
   return(
       <div className={classes.container}>
-        <Typography variant="h4">Parking Spaces</Typography>
+        <Typography variant="h4" sx={{ fontWeight: 'bold' }} >
+          Parking Spaces</Typography>
         <FormControl className={classes.formControl}>
           <InputLabel>Order</InputLabel>
           <Select value={type} onChange={(e)=> setType(e.target.value)}>

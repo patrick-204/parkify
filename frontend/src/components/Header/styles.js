@@ -3,14 +3,19 @@ import { alpha, makeStyles } from '@material-ui/core/styles';
 export default makeStyles((theme) => ({
   title: {
     display:'none',
+    flexGrow:1,
     [theme.breakpoints.up('sm')]: {
       display: 'block',
       fontWeight:'bold'
     },
   },
   button: {
-    marginLeft: theme.spacing(2),
-    marginRight: 0
+    margin: theme.spacing(0, 1),
+    color: 'white',
+    backgroundColor: theme.palette.primary.main,
+    '&:hover': {
+      backgroundColor: alpha(theme.palette.common.white, 0.25)
+    },
   },
   search: {
     position: 'relative',
