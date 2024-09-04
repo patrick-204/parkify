@@ -14,4 +14,4 @@ const HomePage = ({ isLoggedIn, onLogout }) => {
   );
 };
 
-export default HomePage
+export default HomePage; 
