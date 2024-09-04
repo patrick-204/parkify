@@ -1,35 +1,54 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import Chat from './components/Chat';
+import axios from 'axios';
 import './App.css';
 
 function App() {
-  // Define the fetchPhotos function to be used as an event handler
-  const fetchData = () => {
-    fetch('http://localhost:8080/api/users')
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! Status: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log('Data received from backend:', data);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
+  const [currentUserId, setCurrentUserId] = useState(1); // Example current user ID
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    // Fetch the list of users from the backend
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/users');
+        setUsers(response.data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  const handleUserSelect = (userId) => {
+    setSelectedUserId(userId);
   };
 
-  // Return the JSX for rendering the component
   return (
     <div className="App">
-      <header className="App-header">
-        <button onClick={fetchData}>Fetch Data</button>
-      </header>
+      <h1>Parkify Chat</h1>
+      <div className="users-list">
+        {users.length > 0 ? (
+          users.map((user) => (
+            <button key={user.id} onClick={() => handleUserSelect(user.id)}>
+              Chat with {user.name}
+            </button>
+          ))
+        ) : (
+          <p>No users available</p>
+        )}
+      </div>
+      {selectedUserId && (
+        <Chat currentUserId={currentUserId} selectedUserId={selectedUserId} />
+      )}
     </div>
   );
 }
 
 export default App;
+
 
 /* useEffect(() => {
   fetch('http://localhost:8080/users')

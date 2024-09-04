@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const db = require('../db/connection'); 
 
 // Import db functions
 const { doesUserExist } = require('../db/queries/does_user_exist');
