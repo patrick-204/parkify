@@ -8,7 +8,7 @@ import SuccessPage from './components/SuccessPage';
 import CancelPage from './components/CancelPage';
 import ReservationsPage from './components/ReservationsPage';
 
-const App = () => {
+const App1 = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Check if user is logged in on component mount
@@ -46,7 +46,7 @@ const App = () => {
         />
         <Route path="/login" element={<LoginPage isLoggedIn={isLoggedIn} />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/checkout/parking/:parkingSpaceId" element={<CheckoutPage />} /> 
+        <Route path="/checkout/parking/:parkingSpaceId" element={<CheckoutPage />} />
         <Route path="/checkout/success" element={<SuccessPage />} />
         <Route path="/checkout/cancel" element={<CancelPage />} />
         <Route path="/reservations" element={<ReservationsPage />} />
@@ -55,4 +55,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default App1;
