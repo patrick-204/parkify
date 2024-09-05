@@ -1,4 +1,4 @@
-const db = require('../connection');
+const pool = require('../connection');
 
 const priceOfParking = async (parkingSpotId) => {
   const queryString = `SELECT amount 
@@ -7,7 +7,7 @@ const priceOfParking = async (parkingSpotId) => {
   ;
 
   try {
-    const result = await db.query(queryString, [parkingSpotId]);
+    const result = await pool.query(queryString, [parkingSpotId]);
     if (result.rows.length > 0) {
       return result.rows[0];
     } else {
