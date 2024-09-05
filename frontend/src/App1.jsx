@@ -26,6 +26,11 @@ const App1 = () => {
     checkLoginStatus();
   }, []);
 
+  const handleLogin = (loggedIn) => {
+    setIsLoggedIn(loggedIn);
+    if (loggedIn) window.location.href = '/';
+  };
+
   // User logout
   const handleLogout = async () => {
     try {
@@ -44,7 +49,7 @@ const App1 = () => {
           path="/"
           element={<HomePage isLoggedIn={isLoggedIn} onLogout={handleLogout} />}
         />
-        <Route path="/login" element={<LoginPage isLoggedIn={isLoggedIn} />} />
+        <Route path="/login" element={<LoginPage isLoggedIn={isLoggedIn} onLogin={handleLogin} />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/checkout/parking/:parkingSpaceId" element={<CheckoutPage />} />
         <Route path="/checkout/success" element={<SuccessPage />} />

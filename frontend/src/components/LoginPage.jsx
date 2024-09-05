@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const LoginPage = ({ isLoggedIn }) => { 
+const LoginPage = ({ isLoggedIn, onLogin }) => { 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
@@ -12,6 +12,7 @@ const LoginPage = ({ isLoggedIn }) => {
   // If the user is already logged in then redirect to homepage
   if (isLoggedIn) {
     navigate('/');
+    return null;
   }
 
   const handleSubmit = async (event) => {
@@ -27,7 +28,9 @@ const LoginPage = ({ isLoggedIn }) => {
       );      
       setMessage(response.data.message);
 
-      // Redirect to login if already logged in
+      if (onLogin) onLogin(true);
+
+      // Redirect to home page after login
       navigate('/');
     } catch (error) {
       if (error.response) {
