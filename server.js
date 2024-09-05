@@ -23,6 +23,14 @@ const path = require('path');
 app.use(express.static(path.join(__dirname, 'frontend/build')));
 
 
+// app.set('view engine', 'ejs');
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000", // Your frontend URL
+    methods: ["GET", "POST"]
+  }
+});
+
 
 // socket.io configuration
 const server = http.createServer(app);
@@ -50,13 +58,6 @@ io.on('connection', (socket) => {
   });
 });
 
-// app.set('view engine', 'ejs');
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:3000", // Your frontend URL
-    methods: ["GET", "POST"]
-  }
-});
 
 app.use(cors({
   origin: 'http://localhost:3000', // Your frontend URL
