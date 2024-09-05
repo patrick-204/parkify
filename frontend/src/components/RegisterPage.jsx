@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const RegisterPage = () => {
+const RegisterPage = ({ isLoggedIn }) => {
+  const navigate = useNavigate(); 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -8,6 +10,12 @@ const RegisterPage = () => {
     phoneNumber: '',
   });
   const [errors, setErrors] = useState([]);
+
+  // If the user is already logged in then redirect to homepage
+  if (isLoggedIn) {
+    navigate('/');
+    return null;
+  }
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

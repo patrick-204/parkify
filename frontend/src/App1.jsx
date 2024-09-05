@@ -50,7 +50,7 @@ const App1 = () => {
           element={<HomePage isLoggedIn={isLoggedIn} onLogout={handleLogout} />}
         />
         <Route path="/login" element={<LoginPage isLoggedIn={isLoggedIn} onLogin={handleLogin} />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/register" element={<RegisterPage isLoggedIn={isLoggedIn} />} />
         <Route path="/checkout/parking/:parkingSpaceId" element={<CheckoutPage />} />
         <Route path="/checkout/success" element={<SuccessPage />} />
         <Route path="/checkout/cancel" element={<CancelPage />} />
