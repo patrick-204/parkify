@@ -22,6 +22,8 @@ const app = express();
 const path = require('path');
 app.use(express.static(path.join(__dirname, 'frontend/build')));
 
+// socket.io configuration
+const server = http.createServer(app);
 
 // app.set('view engine', 'ejs');
 const io = new Server(server, {
@@ -32,8 +34,6 @@ const io = new Server(server, {
 });
 
 
-// socket.io configuration
-const server = http.createServer(app);
 
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -97,7 +97,6 @@ app.use(
 const userParkingInfoRoutes = require('./routes/userParkingInfoRoutes');
 const usersRoutes = require('./routes/users');
 const userRegistrationRoutes = require('./routes/user-registration');
-// const userLoginRoutes = require('./routes/user-login');
 const userAuthRoutes = require('./routes/user-login');
 const userLogoutRoutes = require('./routes/user-logout');
 const parkingSpaceRoutes = require ('./routes/parkingSpaceRoutes');
@@ -106,6 +105,7 @@ const vehicleApiRoutes = require ('./routes/vehicles-api');
 const reservationsRoutes = require ('./routes/reservations');
 const paymentsRoutes = require('./routes/checkout');
 const messagesRoutes = require('./routes/messages.js'); 
+const userApiRoutes = require('./routes/users-api.js');
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
@@ -113,16 +113,12 @@ const messagesRoutes = require('./routes/messages.js');
 
 app.use('/users', userParkingInfoRoutes);
 app.use('/users', userRegistrationRoutes);
-// app.use('/login', userLoginRoutes);
 app.use('/api/users', userApiRoutes);
 app.use('/users', usersRoutes);
 app.use('/signup', userRegistrationRoutes);
-app.use('/login', userLoginRoutes);
 app.use('/logout', userLogoutRoutes);
-// app.use('/api/users', userApiRoutes);
 app.use('/users', usersRoutes);
 app.use('/api/users/register', userRegistrationRoutes);
-// app.use('/login', userLoginRoutes);
 app.use('/api/user-login', userAuthRoutes);
 app.use('/api/user-logout', userLogoutRoutes);
 app.use('/api/vehicles', vehicleApiRoutes );
