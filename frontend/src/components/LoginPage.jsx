@@ -28,6 +28,7 @@ const LoginPage = ({ isLoggedIn, onLogin }) => {
       );      
       setMessage(response.data.message);
 
+      // Send login status back to app
       if (onLogin) onLogin(true);
 
       // Redirect to home page after login
