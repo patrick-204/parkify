@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const stripe = require('stripe')('sk_test_51PjqBV072KK9cj5n1SJAd3mzXSH1KlHi4K4DbXp4nE0dT6PuCMf55PbfN8DD7iFfE9edaylAhJEqBikQ7ui7NrKn001H3IQd2L');
+require("dotenv").config();
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { priceOfParking } = require('../db/queries/price_of_parking');
 const { doesReservationExist } = require('../db/queries/does_reservation_exist');
 const { createNewReservation } = require('../db/queries/create_new_reservation');

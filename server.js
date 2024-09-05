@@ -24,8 +24,6 @@ app.use(express.static(path.join(__dirname, 'frontend/build')));
 
 // socket.io configuration
 const server = http.createServer(app);
-
-// app.set('view engine', 'ejs');
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:3000", // Your frontend URL
@@ -132,6 +130,7 @@ app.use('/api/checkout', paymentsRoutes);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
 app.use('/checkout', paymentsRoutes);
 app.use('/messaging', messagesRoutes); 
 // Note: mount other resources here, using the same pattern above
@@ -190,26 +189,8 @@ io.on('connection', (socket) => {
   });
 });
 
-
-
-// Home page
-// Warning: avoid creating more routes in this file!
-// Separate them into separate routes files (see above).
-
-
+/* 
 server.listen(PORT, () => {
   console.log('Server is running on http://localhost:8080');
 });
-
-
-
-/* app.get('/', (req, res) => {
-  res.render('index');
-app.get('/', (req, res) => {
-  const isLoggedIn = req.session.userId !== undefined;
-  res.render('index', { isLoggedIn });
-});
-
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
 */ 
