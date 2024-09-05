@@ -1,4 +1,4 @@
-const db = require('../connection');
+const pool = require('../connection');
 
 /**
  * Add a user to the users db.
@@ -9,7 +9,7 @@ const addUserToUsersDatabase = function(name, password, email, phone) {
   RETURNING *;
   `;
 
-  return db
+  return pool
   .query(queryString, [name, password, email, phone])
   .then((result) => {
     // console.log(result.rows[0]);
