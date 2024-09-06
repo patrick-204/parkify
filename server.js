@@ -189,27 +189,3 @@ io.on('connection', (socket) => {
     console.log('User disconnected:', socket.id);
   });
 });
-
-
-
-// Home page
-// Warning: avoid creating more routes in this file!
-// Separate them into separate routes files (see above).
-
-
-server.listen(PORT, () => {
-  console.log('Server is running on http://localhost:8080');
-});
-
-
-
-/* app.get('/', (req, res) => {
-  res.render('index');
-app.get('/', (req, res) => {
-  const isLoggedIn = req.session.userId !== undefined;
-  res.render('index', { isLoggedIn });
-});
-
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-*/ 
