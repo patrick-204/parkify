@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
+import ReservationsPage from '../ReservationsPage';
 
 function Booking() {
   const [open, setOpen] = useState(false);
@@ -21,7 +22,7 @@ function Booking() {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Booking</DialogTitle>
         <DialogContent>
-          Modal body..
+          <ReservationsPage />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
