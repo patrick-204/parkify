@@ -54,6 +54,13 @@ const Header = ({ isLoggedIn, onLogout }) => {
               <Button
                 variant="contained"
                 style={{ backgroundColor: '#3c3c3c', color: "red" }}
+                onClick={() => window.location.href = '/reservations'}
+              >
+                Reservations
+              </Button>
+              <Button
+                variant="contained"
+                style={{ backgroundColor: '#3c3c3c', color: "red" }}
                 onClick={(e) => {
                   e.preventDefault();
                   onLogout();
