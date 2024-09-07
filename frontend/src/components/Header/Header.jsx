@@ -8,7 +8,7 @@ import AddButton from "../AddButton/AddButton";
 
 import useStyles from './styles'
 
-const Header = () => {
+const Header = ({ isLoggedIn, onLogout }) => {
   const classes = useStyles()
   return(
     <AppBar position="static">
@@ -43,12 +43,12 @@ const Header = () => {
                   <Button
                   variant="contained"
                   style={{backgroundColor: '#3c3c3c', color:"red"}}
-                   onClick={() => window.location.href='/signup'}
-                   >Signup</Button>
+                   onClick={() => window.location.href='/register'}
+                   >Register</Button>
                   <Button
                   variant="contained"
                   style={{backgroundColor: '#3c3c3c', color:"red"}}
-                   onClick={() => window.location.href='/logout'}>
+                   onClick={(e) => { e.preventDefault(); onLogout(); }}>
                    Logout</Button>
                   <Button
                     variant="contained"
