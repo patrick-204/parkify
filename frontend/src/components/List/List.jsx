@@ -4,7 +4,7 @@ import { CircularProgress,Grid,Typography,InputLabel,MenuItem,FormControl, Selec
 import useStyles from './styles'
 import PlaceDetails from '../PlaceDetails/PlaceDetails'
 
-const List = () => {
+const List = ({ isLoggedIn }) => {
   const classes=useStyles();
 
   const [type,setType] = useState('parking')
@@ -51,7 +51,7 @@ const List = () => {
         <Grid container spacing={3} className={classes.list}>
           {users?.map((parkingSpace,i) =>(
             <Grid item key={i} xs={12}>
-              <PlaceDetails parkingSpace={parkingSpace}/>
+              <PlaceDetails parkingSpace={parkingSpace} isLoggedIn={isLoggedIn} />
             </Grid>
           ))}
 

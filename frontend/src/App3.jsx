@@ -58,7 +58,7 @@ const App = () => {
       await fetchData();
       await checkLoginStatus();
       getLocation();
-      setLoading(false); // Set loading to false after all data is fetched
+      setLoading(false); 
     };
 
     initializeApp();
@@ -91,7 +91,7 @@ const App = () => {
   };
 
   const onHeaderLoad = () => {
-    setLoading(false); // This will be handled by App's own loading management
+    setLoading(false); 
   };
 
   if (loading) {

@@ -4,7 +4,7 @@ import { Box, Button } from "@material-ui/core";
 import Booking from "../Booking/Booking";
 import Message from "../Message/Message";
 
-const PlaceDetails = ({parkingSpace}) => {
+const PlaceDetails = ({ parkingSpace, isLoggedIn }) => {
 
   return(
     <>
@@ -21,16 +21,19 @@ const PlaceDetails = ({parkingSpace}) => {
         :"Currently Parking space avilable ✅"
         }   </p>
 
-
-    <Box  display="flex"
-          justifyContent="space-around"
-          alignItems="center"
-          flexDirection="row"
-          p={2}
-          bgcolor="background.paper" >
-       <div><Booking bookingParkingSpaceId={parkingSpace.id} /></div>
-       <div><Message /></div>
-    </Box>
+    {isLoggedIn ? (
+      <Box  display="flex"
+            justifyContent="space-around"
+            alignItems="center"
+            flexDirection="row"
+            p={2}
+            bgcolor="background.paper" >
+          
+        <div><Booking bookingParkingSpaceId={parkingSpace.id} /></div>
+        <div><Message /></div>
+      
+      </Box>
+    ) : null}
 
     </>
   )
