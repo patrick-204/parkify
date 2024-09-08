@@ -4,9 +4,11 @@ import SearchIcon from "@material-ui/icons/Search";
 import AddButton from "../AddButton/AddButton";
 import useStyles from './styles';
 import LoginPage from "../LoginPage";
+import RegisterPage from "../RegisterPage";
 
 const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad, onLogin }) => {
-  const [open, setOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [registerOpen, setRegisterOpen] = useState(false);
 
   const classes = useStyles();
 
@@ -21,12 +23,20 @@ const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad, onLogin }) =>
     }
   }, [onHeaderLoad]);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const loginHandleClickOpen = () => {
+    setLoginOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const loginHandleClose = () => {
+    setLoginOpen(false);
+  };
+
+  const RegisterHandleClickOpen = () => {
+    setRegisterOpen(true);
+  };
+
+  const RegisterHandleClose = () => {
+    setRegisterOpen(false);
   };
 
   return (
@@ -58,26 +68,37 @@ const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad, onLogin }) =>
               <Button
                 variant="contained"
                 style={{ backgroundColor: '#3c3c3c', color: "red" }}
-                onClick={() => window.location.href = '/register'}
+                onClick={RegisterHandleClickOpen}
                 className={isHome ? classes.activeButton : undefined}
               >
                 Register
               </Button>
+              <Dialog open={registerOpen} onClose={RegisterHandleClose}>
+                <DialogTitle>Register</DialogTitle>
+                <DialogContent>
+                  <RegisterPage isLoggedIn={isLoggedIn} />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={RegisterHandleClose} color="primary">
+                    Close
+                  </Button>
+                </DialogActions>
+              </Dialog>
               <Button
                 variant="contained"
                 style={{ backgroundColor: '#3c3c3c', color: "red" }}
-                onClick={handleClickOpen}
+                onClick={loginHandleClickOpen}
                 className={isHome ? classes.activeButton : undefined}
               >
                 Login
               </Button>
-              <Dialog open={open} onClose={handleClose}>
+              <Dialog open={loginOpen} onClose={loginHandleClose}>
                 <DialogTitle>Login</DialogTitle>
                 <DialogContent>
                   <LoginPage isLoggedIn={isLoggedIn} onLogin={onLogin} />
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={handleClose} color="primary">
+                  <Button onClick={loginHandleClose} color="primary">
                     Close
                   </Button>
                 </DialogActions>
