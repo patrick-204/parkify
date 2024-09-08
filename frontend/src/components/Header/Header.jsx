@@ -1,10 +1,13 @@
-import React, { useEffect } from "react";
-import { AppBar, Toolbar, Typography, InputBase, Box, Button } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { AppBar, Toolbar, Typography, InputBase, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import AddButton from "../AddButton/AddButton";
 import useStyles from './styles';
+import LoginPage from "../LoginPage";
 
-const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad }) => {
+const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad, onLogin }) => {
+  const [open, setOpen] = useState(false);
+
   const classes = useStyles();
 
   // For path-based styles and logic
@@ -17,6 +20,14 @@ const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad }) => {
       onHeaderLoad(); 
     }
   }, [onHeaderLoad]);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <AppBar position="static">
@@ -55,11 +66,22 @@ const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad }) => {
               <Button
                 variant="contained"
                 style={{ backgroundColor: '#3c3c3c', color: "red" }}
-                onClick={() => window.location.href = '/login'}
+                onClick={handleClickOpen}
                 className={isHome ? classes.activeButton : undefined}
               >
                 Login
               </Button>
+              <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Login</DialogTitle>
+                <DialogContent>
+                  <LoginPage isLoggedIn={isLoggedIn} onLogin={onLogin} />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose} color="primary">
+                    Close
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </div>
           ) : (
             <div>

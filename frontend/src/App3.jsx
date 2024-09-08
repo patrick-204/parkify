@@ -103,7 +103,7 @@ const App = () => {
       <Routes>
         <Route
           path="/"
-          element={<HomePage isLoggedIn={isLoggedIn} onLogout={handleLogout} parkingSpaces={parkingSpaces} currentLocation={currentLocation} currentPath={currentPath} onHeaderLoad={onHeaderLoad} />}
+          element={<HomePage isLoggedIn={isLoggedIn} onLogout={handleLogout} parkingSpaces={parkingSpaces} currentLocation={currentLocation} currentPath={currentPath} onHeaderLoad={onHeaderLoad} onLogin={handleLogin} />}
         />
         <Route
           path="/login"
