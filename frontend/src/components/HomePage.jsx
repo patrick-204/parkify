@@ -1,17 +1,24 @@
 import React from 'react';
-import { link } from 'react-router-dom';
+import { CssBaseline, Grid } from '@material-ui/core';
+import Header from '../components/Header/Header';
+import List from '../components/List/List';
+import Map from '../components/Map/Map';
 
-const HomePage = ({ isLoggedIn, onLogout }) => {
+const HomePage = ({ isLoggedIn, onLogout, parkingSpaces, currentLocation, currentPath, onHeaderLoad }) => {
   return (
-    <div>
-      <h1>Have fun! 🥔</h1>
-      {isLoggedIn && (
-        <form action="/logout" method="post" style={{ display: 'inline' }}>
-          <button type="submit" onClick={onLogout}>Logout</button>
-        </form>
-      )}
-    </div>
+    <>
+      <CssBaseline />
+      <Header isLoggedIn={isLoggedIn} onLogout={onLogout} currentPath={currentPath} onHeaderLoad={onHeaderLoad} />
+      <Grid container spacing={3} style={{ width: '100%' }}>
+        <Grid item xs={12} md={4}>
+          <List />
+        </Grid>
+        <Grid item xs={12} md={8}>
+          <Map parkingSpaces={parkingSpaces} currentLocation={currentLocation} />
+        </Grid>
+      </Grid>
+    </>
   );
 };
 
-export default HomePage; 
+export default HomePage;

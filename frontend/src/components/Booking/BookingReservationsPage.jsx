@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { addHours, isWithinInterval, format } from 'date-fns';
-import Header from './Header/Header';
 
 // Convert local time to UTC
 const localToUTC = (localDate) => {
@@ -26,10 +25,12 @@ const formatTo12Hour = (date) => {
   return format(date, "MM/dd/yyyy h:mm a"); 
 };
 
-const ReservationsPage = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad }) => {
+const BookingReservationsPage = (props) => {
+  const initialParkingSpaceId = props.bookingParkingSpaceId || '';
+  console.log(initialParkingSpaceId);
   const [reservations, setReservations] = useState([]);
   const [availableSpaces, setAvailableSpaces] = useState([]);
-  const [parkingSpaceId, setParkingSpaceId] = useState('');
+  const [parkingSpaceId, setParkingSpaceId] = useState(initialParkingSpaceId);
   const [reservationStart, setReservationStart] = useState(null);
   const [reservationEnd, setReservationEnd] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -208,7 +209,6 @@ const ReservationsPage = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad }) =
 
   return (
     <div>
-      <Header isLoggedIn={isLoggedIn} onLogout={onLogout} currentPath={currentPath} onHeaderLoad={onHeaderLoad} />
       <h1>Reservations</h1>
       <form onSubmit={handleSubmit}>
         <select
@@ -278,4 +278,4 @@ const ReservationsPage = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad }) =
   );
 };
 
-export default ReservationsPage;
+export default BookingReservationsPage;

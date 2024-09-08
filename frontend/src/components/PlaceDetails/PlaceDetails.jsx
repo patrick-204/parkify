@@ -28,7 +28,7 @@ const PlaceDetails = ({parkingSpace}) => {
           flexDirection="row"
           p={2}
           bgcolor="background.paper" >
-       <div><Booking /></div>
+       <div><Booking bookingParkingSpaceId={parkingSpace.id} /></div>
        <div><Message /></div>
     </Box>
 
