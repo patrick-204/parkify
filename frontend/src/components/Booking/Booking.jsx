@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
-import ReservationsPage from '../ReservationsPage';
+import BookingReservationsPage from '../Booking/BookingReservationsPage';
 
-function Booking() {
+function Booking({bookingParkingSpaceId}) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -22,7 +22,7 @@ function Booking() {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Booking</DialogTitle>
         <DialogContent>
-          <ReservationsPage />
+          <BookingReservationsPage bookingParkingSpaceId={bookingParkingSpaceId} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
