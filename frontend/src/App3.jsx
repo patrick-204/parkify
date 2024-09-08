@@ -15,6 +15,7 @@ const App = () => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentPath, setCurrentPath] = useState('/');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,26 +26,7 @@ const App = () => {
         console.error('Error fetching locations data:', error);
       }
     };
-    fetchData();
-  }, []);
 
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setCurrentLocation({ lat: latitude, lng: longitude });
-        },
-        (error) => {
-          console.error('Error fetching location:', error);
-        }
-      );
-    } else {
-      console.log('Geolocation is not supported by this browser');
-    }
-  }, []);
-
-  useEffect(() => {
     const checkLoginStatus = async () => {
       try {
         const response = await fetch('http://localhost:8080/api/user-login/check-login', { credentials: 'include' });
@@ -54,17 +36,41 @@ const App = () => {
         console.error('Error checking login status:', error);
       }
     };
-    checkLoginStatus();
+
+    const getLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            setCurrentLocation({ lat: latitude, lng: longitude });
+          },
+          (error) => {
+            console.error('Error fetching location:', error);
+          }
+        );
+      } else {
+        console.log('Geolocation is not supported by this browser');
+      }
+    };
+
+    // Perform all async operations
+    const initializeApp = async () => {
+      await fetchData();
+      await checkLoginStatus();
+      getLocation();
+      setLoading(false); // Set loading to false after all data is fetched
+    };
+
+    initializeApp();
   }, []);
 
   useEffect(() => {
-    // Update currentPath whenever location changes
     const updatePath = () => {
       setCurrentPath(window.location.pathname);
     };
 
-    window.addEventListener('popstate', updatePath); // For browser navigation
-    updatePath(); // Initial call to set the path on load
+    window.addEventListener('popstate', updatePath);
+    updatePath();
 
     return () => window.removeEventListener('popstate', updatePath);
   }, []);
@@ -84,12 +90,20 @@ const App = () => {
     }
   };
 
+  const onHeaderLoad = () => {
+    setLoading(false); // This will be handled by App's own loading management
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Router>
       <Routes>
         <Route
           path="/"
-          element={<HomePage isLoggedIn={isLoggedIn} onLogout={handleLogout} parkingSpaces={parkingSpaces} currentLocation={currentLocation} currentPath={currentPath} />}
+          element={<HomePage isLoggedIn={isLoggedIn} onLogout={handleLogout} parkingSpaces={parkingSpaces} currentLocation={currentLocation} currentPath={currentPath} onHeaderLoad={onHeaderLoad} />}
         />
         <Route
           path="/login"
@@ -105,7 +119,7 @@ const App = () => {
         />
         <Route
           path="/checkout/success"
-          element={<SuccessPage isLoggedIn={isLoggedIn} onLogout={handleLogout} currentPath={currentPath} />}
+          element={<SuccessPage isLoggedIn={isLoggedIn} onLogout={handleLogout} currentPath={currentPath} onHeaderLoad={onHeaderLoad} />}
         />
         <Route
           path="/checkout/cancel"
@@ -113,7 +127,7 @@ const App = () => {
         />
         <Route
           path="/reservations"
-          element={<ReservationsPage isLoggedIn={isLoggedIn} onLogout={handleLogout} currentPath={currentPath} />}
+          element={<ReservationsPage isLoggedIn={isLoggedIn} onLogout={handleLogout} currentPath={currentPath} onHeaderLoad={onHeaderLoad} />}
         />
       </Routes>
     </Router>

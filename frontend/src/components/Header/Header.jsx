@@ -1,18 +1,22 @@
-import React from "react";
-import { Autocomplete } from "@react-google-maps/api";
+import React, { useEffect } from "react";
 import { AppBar, Toolbar, Typography, InputBase, Box, Button } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-
 import AddButton from "../AddButton/AddButton";
 import useStyles from './styles';
 
-const Header = ({ isLoggedIn, onLogout, currentPath }) => {
+const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad }) => {
   const classes = useStyles();
 
   // For path-based styles and logic
   const isHome = currentPath === '/';
   const isReservations = currentPath === '/reservations';
   const isSuccess = currentPath === '/checkout/success';
+
+  useEffect(() => {
+    if (onHeaderLoad) {
+      onHeaderLoad(); 
+    }
+  }, [onHeaderLoad]);
 
   return (
     <AppBar position="static">
@@ -25,7 +29,7 @@ const Header = ({ isLoggedIn, onLogout, currentPath }) => {
           Parkify
         </Typography>
 
-        <Box display="flex">
+        <Box display="flex" flexGrow={1}>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />

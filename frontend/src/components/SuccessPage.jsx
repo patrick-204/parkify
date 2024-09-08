@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from './Header/Header';
 
-const SuccessPage = ({ isLoggedIn, onLogout, currentPath }) => {
+const SuccessPage = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad }) => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const sessionId = queryParams.get('session_id');
@@ -38,7 +38,7 @@ const SuccessPage = ({ isLoggedIn, onLogout, currentPath }) => {
 
   return (
     <div>
-      <Header isLoggedIn={isLoggedIn} onLogout={onLogout} currentPath={currentPath} />
+      <Header isLoggedIn={isLoggedIn} onLogout={onLogout} currentPath={currentPath} onHeaderLoad={onHeaderLoad} />
       <h1>Payment Status</h1>
       <p>{message}</p>
     </div>

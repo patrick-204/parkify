@@ -26,7 +26,7 @@ const formatTo12Hour = (date) => {
   return format(date, "MM/dd/yyyy h:mm a"); 
 };
 
-const ReservationsPage = ({ isLoggedIn, onLogout, currentPath }) => {
+const ReservationsPage = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad }) => {
   const [reservations, setReservations] = useState([]);
   const [availableSpaces, setAvailableSpaces] = useState([]);
   const [parkingSpaceId, setParkingSpaceId] = useState('');
@@ -208,7 +208,7 @@ const ReservationsPage = ({ isLoggedIn, onLogout, currentPath }) => {
 
   return (
     <div>
-      <Header isLoggedIn={isLoggedIn} onLogout={onLogout} currentPath={currentPath} />
+      <Header isLoggedIn={isLoggedIn} onLogout={onLogout} currentPath={currentPath} onHeaderLoad={onHeaderLoad} />
       <h1>Reservations</h1>
       <form onSubmit={handleSubmit}>
         <select
