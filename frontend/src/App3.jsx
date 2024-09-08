@@ -77,14 +77,14 @@ const App = () => {
 
   const handleLogin = (loggedIn) => {
     setIsLoggedIn(loggedIn);
-    if (loggedIn) window.location.href = '/';
+    // if (loggedIn) window.location.href = '/';
   };
 
   const handleLogout = async () => {
     try {
       await fetch('http://localhost:8080/api/user-logout', { method: 'POST', credentials: 'include' });
       setIsLoggedIn(false);
-      window.location.href = '/';
+      // window.location.href = '/';
     } catch (error) {
       console.error('Logout error:', error);
     }
