@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import { getLocationsData } from './api/api';
 
 import HomePage from './components/HomePage';
@@ -14,6 +14,7 @@ const App = () => {
   const [parkingSpaces, setParkingSpaces] = useState([]);
   const [currentLocation, setCurrentLocation] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentPath, setCurrentPath] = useState('/');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,6 +57,18 @@ const App = () => {
     checkLoginStatus();
   }, []);
 
+  useEffect(() => {
+    // Update currentPath whenever location changes
+    const updatePath = () => {
+      setCurrentPath(window.location.pathname);
+    };
+
+    window.addEventListener('popstate', updatePath); // For browser navigation
+    updatePath(); // Initial call to set the path on load
+
+    return () => window.removeEventListener('popstate', updatePath);
+  }, []);
+
   const handleLogin = (loggedIn) => {
     setIsLoggedIn(loggedIn);
     if (loggedIn) window.location.href = '/';
@@ -76,17 +89,35 @@ const App = () => {
       <Routes>
         <Route
           path="/"
-          element={<HomePage isLoggedIn={isLoggedIn} onLogout={handleLogout} parkingSpaces={parkingSpaces} currentLocation={currentLocation} />}
+          element={<HomePage isLoggedIn={isLoggedIn} onLogout={handleLogout} parkingSpaces={parkingSpaces} currentLocation={currentLocation} currentPath={currentPath} />}
         />
-        <Route path="/login" element={<LoginPage isLoggedIn={isLoggedIn} onLogin={handleLogin} />} />
-        <Route path="/register" element={<RegisterPage isLoggedIn={isLoggedIn} />} />
-        <Route path="/checkout/parking/:parkingSpaceId" element={<CheckoutPage />} />
-        <Route path="/checkout/success" element={<SuccessPage />} />
-        <Route path="/checkout/cancel" element={<CancelPage />} />
-        <Route path="/reservations" element={<ReservationsPage />} />
+        <Route
+          path="/login"
+          element={<LoginPage isLoggedIn={isLoggedIn} onLogin={handleLogin} />}
+        />
+        <Route
+          path="/register"
+          element={<RegisterPage isLoggedIn={isLoggedIn} />}
+        />
+        <Route
+          path="/checkout/parking/:parkingSpaceId"
+          element={<CheckoutPage />}
+        />
+        <Route
+          path="/checkout/success"
+          element={<SuccessPage />}
+        />
+        <Route
+          path="/checkout/cancel"
+          element={<CancelPage />}
+        />
+        <Route
+          path="/reservations"
+          element={<ReservationsPage isLoggedIn={isLoggedIn} onLogout={handleLogout} currentPath={currentPath} />}
+        />
       </Routes>
     </Router>
-);
+  );
 };
 
 export default App;

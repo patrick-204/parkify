@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { addHours, isWithinInterval, format } from 'date-fns';
+import Header from './Header/Header';
 
 // Convert local time to UTC
 const localToUTC = (localDate) => {
@@ -25,7 +26,7 @@ const formatTo12Hour = (date) => {
   return format(date, "MM/dd/yyyy h:mm a"); 
 };
 
-const ReservationsPage = () => {
+const ReservationsPage = ({ isLoggedIn, onLogout, currentPath }) => {
   const [reservations, setReservations] = useState([]);
   const [availableSpaces, setAvailableSpaces] = useState([]);
   const [parkingSpaceId, setParkingSpaceId] = useState('');
@@ -207,6 +208,7 @@ const ReservationsPage = () => {
 
   return (
     <div>
+      <Header isLoggedIn={isLoggedIn} onLogout={onLogout} currentPath={currentPath} />
       <h1>Reservations</h1>
       <form onSubmit={handleSubmit}>
         <select

@@ -6,13 +6,21 @@ import SearchIcon from "@material-ui/icons/Search";
 import AddButton from "../AddButton/AddButton";
 import useStyles from './styles';
 
-const Header = ({ isLoggedIn, onLogout }) => {
+const Header = ({ isLoggedIn, onLogout, currentPath }) => {
   const classes = useStyles();
+
+  // For path-based styles and logic
+  const isHome = currentPath === '/';
+  const isReservations = currentPath === '/reservations';
 
   return (
     <AppBar position="static">
       <Toolbar className={classes.toolbar}>
-        <Typography variant="h5" className={classes.title} style={{ color: 'red' }}>
+        <Typography
+          variant="h5"
+          className={classes.title}
+          style={{ color: 'red' }}
+        >
           Parkify
         </Typography>
 
@@ -35,6 +43,7 @@ const Header = ({ isLoggedIn, onLogout }) => {
                 variant="contained"
                 style={{ backgroundColor: '#3c3c3c', color: "red" }}
                 onClick={() => window.location.href = '/register'}
+                className={isHome ? classes.activeButton : undefined}
               >
                 Register
               </Button>
@@ -42,6 +51,7 @@ const Header = ({ isLoggedIn, onLogout }) => {
                 variant="contained"
                 style={{ backgroundColor: '#3c3c3c', color: "red" }}
                 onClick={() => window.location.href = '/login'}
+                className={isHome ? classes.activeButton : undefined}
               >
                 Login
               </Button>
@@ -51,13 +61,25 @@ const Header = ({ isLoggedIn, onLogout }) => {
               <Button>
                 <AddButton />
               </Button>
-              <Button
-                variant="contained"
-                style={{ backgroundColor: '#3c3c3c', color: "red" }}
-                onClick={() => window.location.href = '/reservations'}
-              >
-                Reservations
-              </Button>
+              {isHome ? (
+                <Button
+                  variant="contained"
+                  style={{ backgroundColor: '#3c3c3c', color: "red" }}
+                  onClick={() => window.location.href = '/reservations'}
+                  className={isReservations ? classes.activeButton : undefined}
+                >
+                  Reservations
+                </Button>
+              ) : isReservations ? (
+                <Button
+                  variant="contained"
+                  style={{ backgroundColor: '#3c3c3c', color: "red" }}
+                  onClick={() => window.location.href = '/'}
+                  className={isHome ? classes.activeButton : undefined}
+                >
+                  Home Page
+                </Button>
+              ) : null}
               <Button
                 variant="contained"
                 style={{ backgroundColor: '#3c3c3c', color: "red" }}
