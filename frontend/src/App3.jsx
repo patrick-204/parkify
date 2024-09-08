@@ -105,7 +105,7 @@ const App = () => {
         />
         <Route
           path="/checkout/success"
-          element={<SuccessPage />}
+          element={<SuccessPage isLoggedIn={isLoggedIn} onLogout={handleLogout} currentPath={currentPath} />}
         />
         <Route
           path="/checkout/cancel"

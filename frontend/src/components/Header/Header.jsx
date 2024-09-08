@@ -12,6 +12,7 @@ const Header = ({ isLoggedIn, onLogout, currentPath }) => {
   // For path-based styles and logic
   const isHome = currentPath === '/';
   const isReservations = currentPath === '/reservations';
+  const isSuccess = currentPath === '/checkout/success';
 
   return (
     <AppBar position="static">
@@ -71,6 +72,15 @@ const Header = ({ isLoggedIn, onLogout, currentPath }) => {
                   Reservations
                 </Button>
               ) : isReservations ? (
+                <Button
+                  variant="contained"
+                  style={{ backgroundColor: '#3c3c3c', color: "red" }}
+                  onClick={() => window.location.href = '/'}
+                  className={isHome ? classes.activeButton : undefined}
+                >
+                  Home Page
+                </Button>
+              ) : isSuccess ? (
                 <Button
                   variant="contained"
                   style={{ backgroundColor: '#3c3c3c', color: "red" }}
