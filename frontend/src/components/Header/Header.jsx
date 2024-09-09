@@ -1,10 +1,15 @@
-import React, { useEffect } from "react";
-import { AppBar, Toolbar, Typography, InputBase, Box, Button } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { AppBar, Toolbar, Typography, InputBase, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import AddButton from "../AddButton/AddButton";
 import useStyles from './styles';
+import LoginPage from "../LoginPage";
+import RegisterPage from "../RegisterPage";
 
-const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad }) => {
+const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad, onLogin }) => {
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [registerOpen, setRegisterOpen] = useState(false);
+
   const classes = useStyles();
 
   // For path-based styles and logic
@@ -17,6 +22,22 @@ const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad }) => {
       onHeaderLoad(); 
     }
   }, [onHeaderLoad]);
+
+  const loginHandleClickOpen = () => {
+    setLoginOpen(true);
+  };
+
+  const loginHandleClose = () => {
+    setLoginOpen(false);
+  };
+
+  const RegisterHandleClickOpen = () => {
+    setRegisterOpen(true);
+  };
+
+  const RegisterHandleClose = () => {
+    setRegisterOpen(false);
+  };
 
   return (
     <AppBar position="static">
@@ -47,19 +68,41 @@ const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad }) => {
               <Button
                 variant="contained"
                 style={{ backgroundColor: '#3c3c3c', color: "red" }}
-                onClick={() => window.location.href = '/register'}
+                onClick={RegisterHandleClickOpen}
                 className={isHome ? classes.activeButton : undefined}
               >
                 Register
               </Button>
+              <Dialog open={registerOpen} onClose={RegisterHandleClose}>
+                <DialogTitle>Register</DialogTitle>
+                <DialogContent>
+                  <RegisterPage isLoggedIn={isLoggedIn} />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={RegisterHandleClose} color="primary">
+                    Close
+                  </Button>
+                </DialogActions>
+              </Dialog>
               <Button
                 variant="contained"
                 style={{ backgroundColor: '#3c3c3c', color: "red" }}
-                onClick={() => window.location.href = '/login'}
+                onClick={loginHandleClickOpen}
                 className={isHome ? classes.activeButton : undefined}
               >
                 Login
               </Button>
+              <Dialog open={loginOpen} onClose={loginHandleClose}>
+                <DialogTitle>Login</DialogTitle>
+                <DialogContent>
+                  <LoginPage isLoggedIn={isLoggedIn} onLogin={onLogin} />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={loginHandleClose} color="primary">
+                    Close
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </div>
           ) : (
             <div>

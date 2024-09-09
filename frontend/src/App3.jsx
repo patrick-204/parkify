@@ -58,7 +58,7 @@ const App = () => {
       await fetchData();
       await checkLoginStatus();
       getLocation();
-      setLoading(false); // Set loading to false after all data is fetched
+      setLoading(false); 
     };
 
     initializeApp();
@@ -77,7 +77,7 @@ const App = () => {
 
   const handleLogin = (loggedIn) => {
     setIsLoggedIn(loggedIn);
-    if (loggedIn) window.location.href = '/';
+    // if (loggedIn) window.location.href = '/';
   };
 
   const handleLogout = async () => {
@@ -91,7 +91,7 @@ const App = () => {
   };
 
   const onHeaderLoad = () => {
-    setLoading(false); // This will be handled by App's own loading management
+    setLoading(false); 
   };
 
   if (loading) {
@@ -103,7 +103,7 @@ const App = () => {
       <Routes>
         <Route
           path="/"
-          element={<HomePage isLoggedIn={isLoggedIn} onLogout={handleLogout} parkingSpaces={parkingSpaces} currentLocation={currentLocation} currentPath={currentPath} onHeaderLoad={onHeaderLoad} />}
+          element={<HomePage isLoggedIn={isLoggedIn} onLogout={handleLogout} parkingSpaces={parkingSpaces} currentLocation={currentLocation} currentPath={currentPath} onHeaderLoad={onHeaderLoad} onLogin={handleLogin} />}
         />
         <Route
           path="/login"

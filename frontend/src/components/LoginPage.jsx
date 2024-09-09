@@ -10,10 +10,10 @@ const LoginPage = ({ isLoggedIn, onLogin }) => {
   const navigate = useNavigate(); 
 
   // If the user is already logged in then redirect to homepage
-  if (isLoggedIn) {
-    navigate('/');
-    return null;
-  }
+  // if (isLoggedIn) {
+  //   navigate('/');
+  //   return null;
+  // }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -32,7 +32,7 @@ const LoginPage = ({ isLoggedIn, onLogin }) => {
       if (onLogin) onLogin(true);
 
       // Redirect to home page after login
-      navigate('/');
+      // navigate('/');
     } catch (error) {
       if (error.response) {
         setError(error.response.data.error);
