@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import axios from 'axios';
+import CustomMarker from './CustomMarker';
 
 const mapContainerStyle = {
   height: '800px',
@@ -10,9 +11,14 @@ const mapContainerStyle = {
 
 
 
-const MapContainer = ({ parkingSpaces,currentLocation }) => {
+const MapContainer = ({ parkingSpaces,currentLocation, setChildHovered }) => {
   const [markers, setMarkers] = useState([]);
   const [map, setMap] = useState(null);
+
+  const handleMarkerHover = (label) => {
+    setChildHovered(label);
+  };
+
 
   const center = currentLocation ? {
     lat: currentLocation.lat,
@@ -64,7 +70,12 @@ const MapContainer = ({ parkingSpaces,currentLocation }) => {
       >
 
         {markers.map((position, index) => (
-          <Marker key={index} position={position} label={`${parkingIds[index]}`} />
+          <CustomMarker
+              key={index}
+              position={position}
+              label={`${parkingIds[index]}`}
+              onHover={handleMarkerHover}
+              />
         ))}
         {currentLocation && (
           <Marker
