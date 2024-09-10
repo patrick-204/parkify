@@ -7,5 +7,6 @@ CREATE TABLE parking_spaces (
     city VARCHAR(30) NOT NULL,
     province VARCHAR(20) NOT NULL,
     price DECIMAL(10, 2),
+    isReserved BOOLEAN DEFAULT FALSE,
     owner_id INTEGER REFERENCES users(id) ON DELETE CASCADE
 );

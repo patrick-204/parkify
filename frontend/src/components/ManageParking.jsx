@@ -5,18 +5,12 @@ const ManageParking = ({ isLoggedIn }) => {
   const navigate = useNavigate(); 
   const [formData, setFormData] = useState({
     location: '',
-    streeAddress: '',
+    streetAddress: '',
     city: '',
     province: '',
     price: ''
   });
   const [errors, setErrors] = useState([]);
-
-  // If the user is already logged in then redirect to homepage
-  if (isLoggedIn) {
-    navigate('/');
-    return null;
-  }
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -27,15 +21,12 @@ const ManageParking = ({ isLoggedIn }) => {
 
     // Perform form validation
     const errors = [];
-    if (!formData.name.trim()) errors.push('Name is required.');
-    if (!formData.email || !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(formData.email)) {
-      errors.push('A valid email is required.');
-    }
-    if (!formData.password || formData.password.length < 8) {
-      errors.push('Password must be at least 8 characters long.');
-    }
-    if (formData.phoneNumber && !/^\d{10}$/.test(formData.phoneNumber)) {
-      errors.push('Phone number must be a 10-digit number.');
+    if (!formData.location.trim()) errors.push('Location is required.');
+    if (!formData.streetAddress.trim()) errors.push('Street Address is required.');
+    if (!formData.city.trim()) errors.push('City is required.');
+    if (!formData.province.trim()) errors.push('Province is required.');
+    if (!formData.price || isNaN(formData.price) || parseFloat(formData.price) <= 0) {
+      errors.push('Price must be a positive number.');
     }
 
     if (errors.length > 0) {
@@ -44,27 +35,28 @@ const ManageParking = ({ isLoggedIn }) => {
     }
 
     try {
-      const response = await fetch('http://localhost:8080/api/users/register', {
+      const response = await fetch('http://localhost:8080/parkingSpaces/add', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
+        credentials: 'include'
       });
 
       if (response.ok) {
-        window.location.href = '/';
+        navigate('/'); 
       } else {
         const errorData = await response.json();
         setErrors(errorData.errors || ['Internal Server Error']);
       }
     } catch (error) {
-      console.error("Error during registration:", error);
+      console.error("Error while adding parking space:", error);
       setErrors(["Internal Server Error"]);
     }
   };
 
   return (
     <div>
-      <h1>Register</h1>
+      <h1>Manage Parking Spaces</h1>
       {errors.length > 0 && (
         <div className="errors">
           <ul>
@@ -76,18 +68,51 @@ const ManageParking = ({ isLoggedIn }) => {
       )}
       <form onSubmit={handleSubmit}>
         <div>
-          <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" />
+          <input
+            type="text"
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+            placeholder="Location"
+          />
         </div>
         <div>
-          <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" />
+          <input
+            type="text"
+            name="streetAddress"
+            value={formData.streetAddress}
+            onChange={handleChange}
+            placeholder="Street Address"
+          />
         </div>
         <div>
-          <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" />
+          <input
+            type="text"
+            name="city"
+            value={formData.city}
+            onChange={handleChange}
+            placeholder="City"
+          />
         </div>
         <div>
-          <input type="text" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} placeholder="Phone number" />
+          <input
+            type="text"
+            name="province"
+            value={formData.province}
+            onChange={handleChange}
+            placeholder="Province"
+          />
         </div>
-        <button type="submit">Register</button>
+        <div>
+          <input
+            type="text"
+            name="price"
+            value={formData.price}
+            onChange={handleChange}
+            placeholder="Price"
+          />
+        </div>
+        <button type="submit">Add Parking Space</button>
         <a href="/">Cancel</a>
       </form>
     </div>
