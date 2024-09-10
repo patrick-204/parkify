@@ -58,7 +58,15 @@ const List = ({ isLoggedIn,childHovered }) => {
         </FormControl>
         <Grid container spacing={3} className={classes.list}>
           {users?.map((parkingSpace,i) =>(
-            <Grid ref={elRefs[i]} item key={i} xs={12}>
+            <Grid
+                  ref={elRefs[i]}
+                  item
+                  key={i}
+                  xs={12}
+                  style={{
+                    backgroundColor: i % 2 === 0 ? '#f9f9f9' : '#b8b8b8',
+                  }}
+                  >
               <PlaceDetails
                   parkingSpace={parkingSpace}
                   isLoggedIn={isLoggedIn}
