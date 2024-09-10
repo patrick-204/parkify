@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { addHours, isWithinInterval, format } from 'date-fns';
-import Header from './Header/Header';
+import Header from '../Header/Header';
 
 // Convert local time to UTC
 const localToUTC = (localDate) => {
@@ -23,7 +23,7 @@ const utcToLocal = (utcDate) => {
 
 // Format date and time to 12-hour format
 const formatTo12Hour = (date) => {
-  return format(date, "MM/dd/yyyy h:mm a"); 
+  return format(date, "MM/dd/yyyy h:mm a");
 };
 
 const ReservationsPage = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad }) => {
@@ -35,8 +35,8 @@ const ReservationsPage = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad }) =
   const [userId, setUserId] = useState(null);
   const [reservedPeriods, setReservedPeriods] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
-  const [loading, setLoading] = useState(true); 
-  const navigate = useNavigate(); 
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   // Fetch user ID and available parking spaces on component mount
   useEffect(() => {
@@ -121,7 +121,7 @@ const ReservationsPage = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad }) =
       } catch (error) {
         console.error('Error fetching reservations:', error);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     }
   };
@@ -139,17 +139,17 @@ const ReservationsPage = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad }) =
     dateStart.setHours(0, 0, 0, 0);
     const dateEnd = new Date(date);
     dateEnd.setHours(23, 59, 59, 999);
-  
+
     let disabledSlots = [];
     for (let hour = 0; hour < 24; hour++) {
       // Check both 00 and 30 minutes of each hour
-      for (let minute of [0, 30]) { 
+      for (let minute of [0, 30]) {
         const slotStart = new Date(dateStart);
         slotStart.setHours(hour, minute);
         const slotEnd = new Date(slotStart);
         // Half-hour slot
-        slotEnd.setMinutes(slotEnd.getMinutes() + 30); 
-  
+        slotEnd.setMinutes(slotEnd.getMinutes() + 30);
+
         if (isTimeSlotBooked(slotStart)) {
           disabledSlots.push(slotStart);
         }
@@ -161,8 +161,8 @@ const ReservationsPage = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad }) =
   const timeSlotDisabled = (time) => {
     const timeHalfHour = new Date(time);
     // Ensure seconds and milliseconds are zeroed out
-    timeHalfHour.setSeconds(0, 0); 
-  
+    timeHalfHour.setSeconds(0, 0);
+
     return filterTimeSlots(time).some(slot => slot.getTime() === timeHalfHour.getTime());
   };
 
@@ -173,12 +173,12 @@ const ReservationsPage = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad }) =
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!reservationStart || !reservationEnd || reservationStart >= reservationEnd) {
       setErrorMessage('Invalid reservation dates.');
       return;
     }
-  
+
     try {
       const response = await fetch('http://localhost:8080/api/checkout/create-checkout-session', {
         method: 'POST',
@@ -192,7 +192,7 @@ const ReservationsPage = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad }) =
           reservationEnd: localToUTC(reservationEnd),
         }),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         window.location.href = data.url; // Redirect to Stripe Checkout
@@ -228,7 +228,7 @@ const ReservationsPage = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad }) =
           onChange={(date) => setReservationStart(date)}
           showTimeSelect
           timeIntervals={30}
-          dateFormat="MM/dd/yyyy h:mm a" 
+          dateFormat="MM/dd/yyyy h:mm a"
           filterTime={time => !timeSlotDisabled(time)}
           placeholderText="Select start date"
           required
@@ -238,7 +238,7 @@ const ReservationsPage = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad }) =
           onChange={(date) => setReservationEnd(date)}
           showTimeSelect
           timeIntervals={30}
-          dateFormat="MM/dd/yyyy h:mm a" 
+          dateFormat="MM/dd/yyyy h:mm a"
           filterTime={time => !timeSlotDisabled(time)}
           placeholderText="Select end date"
           required

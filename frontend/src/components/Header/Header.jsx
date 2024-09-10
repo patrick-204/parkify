@@ -3,9 +3,9 @@ import { AppBar, Toolbar, Typography, InputBase, Box, Button, Dialog, DialogActi
 import SearchIcon from "@material-ui/icons/Search";
 import AddButton from "../AddButton/AddButton";
 import useStyles from './styles';
-import LoginPage from "../LoginPage";
-import RegisterPage from "../RegisterPage";
-import ManageParking from '../ManageParking';
+import LoginPage from "../LoginPage/LoginPage";
+import RegisterPage from "../RegisterPage/RegisterPage";
+import ManageParking from '../ManageParking/ManageParking';
 
 const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad, onLogin }) => {
   const [loginOpen, setLoginOpen] = useState(false);
@@ -21,7 +21,7 @@ const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad, onLogin }) =>
 
   useEffect(() => {
     if (onHeaderLoad) {
-      onHeaderLoad(); 
+      onHeaderLoad();
     }
   }, [onHeaderLoad]);
 

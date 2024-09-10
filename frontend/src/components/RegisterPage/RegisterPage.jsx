@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './style.css'
 
 const RegisterPage = ({ isLoggedIn }) => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -62,34 +63,57 @@ const RegisterPage = ({ isLoggedIn }) => {
   };
 
   return (
-    <div>
-      <h1>Register</h1>
-      {errors.length > 0 && (
-        <div className="errors">
-          <ul>
-            {errors.map((error, index) => (
-              <li key={index}>{error}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" />
-        </div>
-        <div>
-          <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" />
-        </div>
-        <div>
-          <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" />
-        </div>
-        <div>
-          <input type="text" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} placeholder="Phone number" />
-        </div>
-        <button type="submit">Register</button>
-        <a href="/">Cancel</a>
-      </form>
-    </div>
+    <div className='registerForm'>
+    {errors.length > 0 && (
+      <div className='errors'>
+        <ul>
+          {errors.map((error, index) => (
+            <li key={index}>{error}</li>
+          ))}
+        </ul>
+      </div>
+    )}
+    <form onSubmit={handleSubmit}>
+      <div className='formGroup'>
+        <input
+          type='text'
+          name='name'
+          value={formData.name}
+          onChange={handleChange}
+          placeholder='Name'
+        />
+      </div>
+      <div className='formGroup'>
+        <input
+          type='email'
+          name='email'
+          value={formData.email}
+          onChange={handleChange}
+          placeholder='Email'
+        />
+      </div>
+      <div className='formGroup'>
+        <input
+          type='password'
+          name='password'
+          value={formData.password}
+          onChange={handleChange}
+          placeholder='Password'
+        />
+      </div>
+      <div className='formGroup'>
+        <input
+          type='text'
+          name='phoneNumber'
+          value={formData.phoneNumber}
+          onChange={handleChange}
+          placeholder='Phone number'
+        />
+      </div>
+      <button type='submit'>Register</button>
+      <a href='/' className='cancelLink'>Cancel</a>
+    </form>
+  </div>
   );
 };
 

@@ -36,9 +36,9 @@ const List = ({ isLoggedIn,childHovered }) => {
 
   return(
       <div className={classes.container}>
-        <Typography variant="h4" sx={{ fontWeight: 'bold' }} >
+        <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom:"20px"}} >
           Parking Spaces</Typography>
-        <FormControl className={classes.formControl}>
+        {/* <FormControl className={classes.formControl}>
           <InputLabel>Order</InputLabel>
           <Select value={type} onChange={(e)=> setType(e.target.value)}>
             <MenuItem value="parking">Parking</MenuItem>
@@ -55,8 +55,8 @@ const List = ({ isLoggedIn,childHovered }) => {
             <MenuItem value={4.5}>Above 4.5</MenuItem>
 
           </Select>
-        </FormControl>
-        <Grid container spacing={3} className={classes.list}>
+        </FormControl> */}
+        <Grid container spacing={3} className={classes.list} >
           {users?.map((parkingSpace,i) =>(
             <Grid
                   ref={elRefs[i]}
@@ -64,8 +64,9 @@ const List = ({ isLoggedIn,childHovered }) => {
                   key={i}
                   xs={12}
                   style={{
-                    backgroundColor: i % 2 === 0 ? '#f9f9f9' : '#b8b8b8',
+                    backgroundColor: i % 2 === 0 ? '#ecece7' : '#b8b8b8',
                   }}
+
                   >
               <PlaceDetails
                   parkingSpace={parkingSpace}

@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import { getLocationsData } from './api/api';
 
-import HomePage from './components/HomePage';
-import LoginPage from './components/LoginPage';
-import RegisterPage from './components/RegisterPage';
-import CheckoutPage from './components/CheckoutPage';
-import SuccessPage from './components/SuccessPage';
-import CancelPage from './components/CancelPage';
-import ReservationsPage from './components/ReservationsPage';
+import HomePage from './components/HomePage/HomePage';
+import LoginPage from './components/LoginPage/LoginPage';
+import RegisterPage from './components/RegisterPage/RegisterPage';
+import CheckoutPage from './components/CheckoutPage/CheckoutPage';
+import SuccessPage from './components/SuccessPage/SuccessPage';
+import CancelPage from './components/CancelPage/CancelPage';
+import ReservationsPage from './components/ReservationsPage/ReservationsPage';
 
 const App = () => {
   const [parkingSpaces, setParkingSpaces] = useState([]);
@@ -56,7 +56,7 @@ const App = () => {
       }
     };
 
-    
+
 
     // Perform all async operations
     const initializeApp = async () => {

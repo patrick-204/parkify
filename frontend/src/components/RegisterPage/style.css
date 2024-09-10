@@ -1,0 +1,86 @@
+/* RegisterPage.css */
+
+/* Basic styling for the registration form container */
+.registerForm {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #393737;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for the form elements */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #393737;
+  color: red;
+}
+
+/* Styling for error messages */
+.errors {
+  background-color: #fdd;
+  border: 1px solid #fbb;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+}
+
+.errors ul {
+  list-style: none;
+}
+
+.errors li {
+  color: #d8000c;
+  font-size: 14px;
+}
+
+/* Cancel link styling */
+.cancelLink {
+  display: inline-block;
+  margin-top: 10px;
+  color: #ff0000;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.cancelLink:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .registerForm {
+    padding: 15px;
+  }
+
+  input, button {
+    font-size: 14px;
+  }
+}
