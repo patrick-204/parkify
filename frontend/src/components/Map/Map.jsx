@@ -5,7 +5,7 @@ import axios from 'axios';
 import CustomMarker from './CustomMarker';
 
 const mapContainerStyle = {
-  height: '800px',
+  height: '100%',
   width: '100%',
 };
 

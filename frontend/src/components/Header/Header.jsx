@@ -5,10 +5,12 @@ import AddButton from "../AddButton/AddButton";
 import useStyles from './styles';
 import LoginPage from "../LoginPage";
 import RegisterPage from "../RegisterPage";
+import ManageParking from '../ManageParking';
 
 const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad, onLogin }) => {
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
+  const [addParkingOpen, setAddParkingOpen] = useState(false);
 
   const classes = useStyles();
 
@@ -37,6 +39,14 @@ const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad, onLogin }) =>
 
   const RegisterHandleClose = () => {
     setRegisterOpen(false);
+  };
+
+  const addParkingHandleClickOpen = () => {
+    setAddParkingOpen(true);
+  };
+
+  const addParkingHandleClose = () => {
+    setAddParkingOpen(false);
   };
 
   return (
@@ -106,9 +116,24 @@ const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad, onLogin }) =>
             </div>
           ) : (
             <div>
-              <Button>
-                <AddButton />
-              </Button>
+              <Button
+                variant="contained"
+                style={{ backgroundColor: '#3c3c3c', color: "red" }}
+                onClick={addParkingHandleClickOpen}
+              >
+                My Parking Spaces
+                </Button>
+                <Dialog open={addParkingOpen} onClose={addParkingHandleClose}>
+                  <DialogTitle>My Parking Spaces</DialogTitle>
+                  <DialogContent>
+                    <ManageParking isLoggedIn={isLoggedIn} />
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={addParkingHandleClose} color="primary">
+                      Close
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               {isHome ? (
                 <Button
                   variant="contained"

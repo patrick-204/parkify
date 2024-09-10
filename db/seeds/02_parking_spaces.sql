@@ -11,3 +11,4 @@ VALUES
     ('M4L 1A1', '8 Coxwell Avenue', 'Toronto', 'ON', 5.00, FALSE, 8),
     ('M8V 1A1', '9 The Queensway', 'Toronto', 'ON', 6.00, FALSE, 9),
     ('M9W 1A1', '10 Albion Road', 'Toronto', 'ON', 7.50, TRUE, 10);
+    

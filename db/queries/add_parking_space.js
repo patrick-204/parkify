@@ -1,16 +1,16 @@
 const db = require('../connection');
 
-const addParkingSpace = (location, isReserved, ownerId) => {
+const addParkingSpace = (location, streetAddress, city, province, price, ownerId) => {
   const query = `
-    INSERT INTO parking_spaces (location, isReserved, owner_id)
-    VALUES ($1, $2, $3)
+    INSERT INTO parking_spaces (location, street_address, city, province, price, owner_id)
+    VALUES ($1, $2, $3, $4, $5, $6)
     RETURNING *;
   `;
 
-  return db.query(query, [location, isReserved, ownerId])
+  return db.query(query, [location, streetAddress, city, province, price, ownerId])
     .then(result => result.rows[0])
     .catch(err => {
-      console.error('Error executing query', err.stack);
+      console.error('Error adding parking space to database', err.stack);
       throw err;
     });
 };
