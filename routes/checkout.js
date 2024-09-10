@@ -21,11 +21,11 @@ router.get('/parking/:id', async (req, res) => {
     const parkingSpotId = parseInt(req.params.id);
     const result = await priceOfParking(parkingSpotId);
 
-    if (!result || !result.amount) {
+    if (!result || !result.price) {
       return res.status(400).json({ error: 'Price not found.' });
     }
 
-    res.json({ price: result.amount });
+    res.json({ price: result.price });
   } catch (error) {
     console.error("Error retrieving price:", error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -39,11 +39,11 @@ router.post('/create-checkout-session', async (req, res) => {
 
     // Fetch the price of the parking spot
     const result = await priceOfParking(parkingSpaceId);
-    if (!result || !result.amount) {
+    if (!result || !result.price) {
       return res.status(400).json({ error: 'Price not found.' });
     }
 
-    const amountInCents = Math.round(result.amount * 100);
+    const amountInCents = Math.round(result.price * 100);
 
     const session = await stripe.checkout.sessions.create({
       line_items: [

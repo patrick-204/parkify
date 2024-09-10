@@ -1,7 +1,7 @@
 const db = require('../connection');
 
 const priceOfParking = async (parkingSpotId) => {
-  const queryString = `SELECT amount 
+  const queryString = `SELECT price 
   FROM parking_spaces 
   WHERE id = $1`
   ;
