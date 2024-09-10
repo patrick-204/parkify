@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const ManageParking = ({ isLoggedIn }) => {
@@ -11,6 +11,33 @@ const ManageParking = ({ isLoggedIn }) => {
     price: ''
   });
   const [errors, setErrors] = useState([]);
+  // Holds aprking spaces
+  const [parkingSpaces, setParkingSpaces] = useState([]); 
+
+  // Fetch parking spaces for the current user when component mounts
+  useEffect(() => {
+    const fetchParkingSpaces = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/parkingSpaces', {
+          method: 'GET',
+          credentials: 'include' 
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setParkingSpaces(data.parkingSpaces);
+        } else {
+          const errorData = await response.json();
+          setErrors(errorData.errors || ['Internal Server Error']);
+        }
+      } catch (error) {
+        console.error("Error fetching parking spaces:", error);
+        setErrors(["Internal Server Error"]);
+      }
+    };
+
+    fetchParkingSpaces();
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -43,7 +70,26 @@ const ManageParking = ({ isLoggedIn }) => {
       });
 
       if (response.ok) {
-        navigate('/'); 
+        // Fetch parking spaces again after adding a new one
+        const updatedResponse = await fetch('http://localhost:8080/parkingSpaces', {
+          method: 'GET',
+          credentials: 'include'
+        });
+
+        if (updatedResponse.ok) {
+          const data = await updatedResponse.json();
+          setParkingSpaces(data.parkingSpaces);
+        }
+
+        // Clear form data and errors
+        setFormData({
+          location: '',
+          streetAddress: '',
+          city: '',
+          province: '',
+          price: ''
+        });
+        setErrors([]);
       } else {
         const errorData = await response.json();
         setErrors(errorData.errors || ['Internal Server Error']);
@@ -115,6 +161,36 @@ const ManageParking = ({ isLoggedIn }) => {
         <button type="submit">Add Parking Space</button>
         <a href="/">Cancel</a>
       </form>
+
+      <h2>Your Parking Spaces</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Location</th>
+            <th>Street Address</th>
+            <th>City</th>
+            <th>Province</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {parkingSpaces.length > 0 ? (
+            parkingSpaces.map((space, index) => (
+              <tr key={index}>
+                <td>{space.location}</td>
+                <td>{space.streetAddress}</td>
+                <td>{space.city}</td>
+                <td>{space.province}</td>
+                <td>{space.price}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="5">No parking spaces added.</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
     </div>
   );
 };
