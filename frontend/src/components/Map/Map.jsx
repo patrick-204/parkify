@@ -11,7 +11,7 @@ const mapContainerStyle = {
 
 
 
-const MapContainer = ({ parkingSpaces,currentLocation, setChildHovered }) => {
+const MapContainer = ({ parkingSpaces,currentLocation,setChildHovered }) => {
   const [markers, setMarkers] = useState([]);
   const [map, setMap] = useState(null);
 
@@ -75,6 +75,7 @@ const MapContainer = ({ parkingSpaces,currentLocation, setChildHovered }) => {
               position={position}
               label={`${parkingIds[index]}`}
               onHover={handleMarkerHover}
+
               />
         ))}
         {currentLocation && (

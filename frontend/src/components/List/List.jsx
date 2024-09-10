@@ -1,16 +1,17 @@
-import React,{useState,useEffect} from "react";
+import React,{useState,useEffect,createRef} from "react";
 import axios from "axios";
 import { CircularProgress,Grid,Typography,InputLabel,MenuItem,FormControl, Select } from "@material-ui/core";
 import useStyles from './styles'
 import PlaceDetails from '../PlaceDetails/PlaceDetails'
 
-const List = ({ isLoggedIn }) => {
+const List = ({ isLoggedIn,childHovered }) => {
   const classes=useStyles();
-
+  console.log({childHovered})
   const [type,setType] = useState('parking')
   const [rating,setRating] = useState('')
 
   const [users,setUsers] = useState([]);
+  const [elRefs, setElRefs] = useState();
 
   useEffect(()=> {
     const fetchAllParkingSpaces = async () => {
@@ -24,6 +25,13 @@ const List = ({ isLoggedIn }) => {
     fetchAllParkingSpaces()
   },[])
 
+  //////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////
+  useEffect(() => {
+    const refs = Array(users.length).fill().map((_, i) => elRefs[i] || createRef());
+    setElRefs(refs);
+  }, [users]);
 
 
   return(
@@ -50,8 +58,13 @@ const List = ({ isLoggedIn }) => {
         </FormControl>
         <Grid container spacing={3} className={classes.list}>
           {users?.map((parkingSpace,i) =>(
-            <Grid item key={i} xs={12}>
-              <PlaceDetails parkingSpace={parkingSpace} isLoggedIn={isLoggedIn} />
+            <Grid ref={elRefs[i]} item key={i} xs={12}>
+              <PlaceDetails
+                  parkingSpace={parkingSpace}
+                  isLoggedIn={isLoggedIn}
+                  selected={Number(childHovered) === i+1}
+                  refProp ={elRefs[i]}
+                  />
             </Grid>
           ))}
 

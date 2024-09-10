@@ -3,9 +3,15 @@ import { Box, Button } from "@material-ui/core";
 
 import Booking from "../Booking/Booking";
 import Message from "../Message/Message";
+import { useEffect } from "react";
 
-const PlaceDetails = ({ parkingSpace, isLoggedIn }) => {
+const PlaceDetails = ({ parkingSpace, isLoggedIn, selected, refProp }) => {
 
+  useEffect(() => {
+    if (selected && refProp?.current) {
+      refProp.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [selected, refProp]);
   return(
     <>
 
@@ -28,10 +34,10 @@ const PlaceDetails = ({ parkingSpace, isLoggedIn }) => {
             flexDirection="row"
             p={2}
             bgcolor="background.paper" >
-          
+
         <div><Booking bookingParkingSpaceId={parkingSpace.id} /></div>
         <div><Message /></div>
-      
+
       </Box>
     ) : null}
 

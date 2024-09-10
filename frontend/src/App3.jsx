@@ -16,6 +16,25 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentPath, setCurrentPath] = useState('/');
   const [loading, setLoading] = useState(true);
+  const [childHovered,setChildHovered] = useState(null);
+
+
+  useEffect(()=>{
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const {latitude, longitude} = position.coords;
+            setCurrentLocation({lat:latitude, lng:longitude});
+          },
+          (error) => {
+            console.error("Error fetching location:", error);
+          }
+        );
+
+      }else {
+        console.log("Geolocation is not supported by this browser")
+      }
+    },[]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,28 +56,14 @@ const App = () => {
       }
     };
 
-    const getLocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            setCurrentLocation({ lat: latitude, lng: longitude });
-          },
-          (error) => {
-            console.error('Error fetching location:', error);
-          }
-        );
-      } else {
-        console.log('Geolocation is not supported by this browser');
-      }
-    };
+    
 
     // Perform all async operations
     const initializeApp = async () => {
       await fetchData();
       await checkLoginStatus();
-      getLocation();
-      setLoading(false); 
+      // getLocation();
+      setLoading(false);
     };
 
     initializeApp();
@@ -91,7 +96,7 @@ const App = () => {
   };
 
   const onHeaderLoad = () => {
-    setLoading(false); 
+    setLoading(false);
   };
 
   if (loading) {
@@ -103,7 +108,17 @@ const App = () => {
       <Routes>
         <Route
           path="/"
-          element={<HomePage isLoggedIn={isLoggedIn} onLogout={handleLogout} parkingSpaces={parkingSpaces} currentLocation={currentLocation} currentPath={currentPath} onHeaderLoad={onHeaderLoad} onLogin={handleLogin} />}
+          element={<HomePage
+            isLoggedIn={isLoggedIn}
+            onLogout={handleLogout}
+            parkingSpaces={parkingSpaces}
+            currentLocation={currentLocation}
+            currentPath={currentPath}
+            onHeaderLoad={onHeaderLoad}
+            onLogin={handleLogin}
+            childHovered={childHovered}
+            setChildHovered={setChildHovered}
+            />}
         />
         <Route
           path="/login"
