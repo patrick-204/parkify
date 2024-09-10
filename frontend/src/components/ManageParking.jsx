@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const ManageParking = ({ isLoggedIn }) => {
   const navigate = useNavigate(); 
+  const { ownerId } = useParams(); 
   const [formData, setFormData] = useState({
     location: '',
     streetAddress: '',
@@ -11,14 +12,12 @@ const ManageParking = ({ isLoggedIn }) => {
     price: ''
   });
   const [errors, setErrors] = useState([]);
-  // Holds aprking spaces
   const [parkingSpaces, setParkingSpaces] = useState([]); 
 
-  // Fetch parking spaces for the current user when component mounts
   useEffect(() => {
     const fetchParkingSpaces = async () => {
       try {
-        const response = await fetch('http://localhost:8080/parkingSpaces', {
+        const response = await fetch(`http://localhost:8080/parkingSpaces/parking-space/spaces`, {
           method: 'GET',
           credentials: 'include' 
         });
@@ -37,7 +36,7 @@ const ManageParking = ({ isLoggedIn }) => {
     };
 
     fetchParkingSpaces();
-  }, []);
+  }, [ownerId]); 
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -46,7 +45,6 @@ const ManageParking = ({ isLoggedIn }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Perform form validation
     const errors = [];
     if (!formData.location.trim()) errors.push('Location is required.');
     if (!formData.streetAddress.trim()) errors.push('Street Address is required.');
@@ -70,8 +68,7 @@ const ManageParking = ({ isLoggedIn }) => {
       });
 
       if (response.ok) {
-        // Fetch parking spaces again after adding a new one
-        const updatedResponse = await fetch('http://localhost:8080/parkingSpaces', {
+        const updatedResponse = await fetch(`http://localhost:8080/parkingSpaces/parking-space/spaces`, {
           method: 'GET',
           credentials: 'include'
         });
@@ -81,7 +78,6 @@ const ManageParking = ({ isLoggedIn }) => {
           setParkingSpaces(data.parkingSpaces);
         }
 
-        // Clear form data and errors
         setFormData({
           location: '',
           streetAddress: '',

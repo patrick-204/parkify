@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const parkingSpacesQueries = require('../db/queries/parking_spaces');
 const { addParkingSpace } = require('../db/queries/add_parking_space');
+const { getParkingSpaceByUserId } = require('../db/queries/get_parking_spaces_by_user');
 
 // Get all parking spaces
 router.get('/', (req, res) => {
@@ -12,6 +13,24 @@ router.get('/', (req, res) => {
     .catch(err => {
       res.status(500).json({ error: err.message });
     });
+});
+
+// Endpoint to fetch the parking spaces by user id
+router.get('/parking-space/spaces', async (req, res) => {
+  try {
+    const ownerId = req.session.userId;
+    console.log(ownerId);
+    const result = await getParkingSpaceByUserId(ownerId);
+
+    if (!result || result.length === 0) {
+      return res.status(400).json({ error: 'User parking spaces not found.' });
+    }
+
+    res.json({ parkingSpaces: result });
+  } catch (error) {
+    console.error("Error retrieving parking spaces:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 // Add a parking space
