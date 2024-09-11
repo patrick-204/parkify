@@ -115,7 +115,7 @@ const ManageParking = ({ isLoggedIn }) => {
             name="location"
             value={formData.location}
             onChange={handleChange}
-            placeholder="Location"
+            placeholder="Postal Code"
           />
         </div>
         <div>
@@ -162,7 +162,7 @@ const ManageParking = ({ isLoggedIn }) => {
       <table>
         <thead>
           <tr>
-            <th>Location</th>
+            <th>Postal Code</th>
             <th>Street Address</th>
             <th>City</th>
             <th>Province</th>
@@ -182,7 +182,7 @@ const ManageParking = ({ isLoggedIn }) => {
             ))
           ) : (
             <tr>
-              <td colSpan="5">No parking spaces added.</td>
+              <td colSpan="5">No parking spaces found for the user.</td>
             </tr>
           )}
         </tbody>
