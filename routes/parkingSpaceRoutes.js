@@ -19,19 +19,29 @@ router.get('/', (req, res) => {
 router.get('/parking-space/spaces', async (req, res) => {
   try {
     const ownerId = req.session.userId;
-    console.log(ownerId);
-    const result = await getParkingSpaceByUserId(ownerId);
 
-    if (!result || result.length === 0) {
-      return res.status(400).json({ error: 'User parking spaces not found.' });
+    if (!ownerId) {
+      return res.status(400).json({ error: 'User ID is missing from the session.' });
     }
 
-    res.json({ parkingSpaces: result });
+    const result = await getParkingSpaceByUserId(ownerId);
+
+    if (Array.isArray(result)) {
+      if (!result) {
+        return res.json({ message: 'No parking spaces found for the user.' });
+      }
+      return res.json({ parkingSpaces: result });
+    } else {
+      console.error("Unexpected result format:", result);
+      return res.status(500).json({ error: 'Unexpected response format from the server.' });
+    }
   } catch (error) {
     console.error("Error retrieving parking spaces:", error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
 
 // Add a parking space
 router.post('/add', async (req, res) => {

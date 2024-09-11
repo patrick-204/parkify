@@ -21,11 +21,11 @@ router.get('/parking/:id', async (req, res) => {
     const parkingSpotId = parseInt(req.params.id);
     const result = await priceOfParking(parkingSpotId);
 
-    if (!result || !result.amount) {
+    if (!result || !result.price) {
       return res.status(400).json({ error: 'Price not found.' });
     }
 
-    res.json({ price: result.amount });
+    res.json({ price: result.price });
   } catch (error) {
     console.error("Error retrieving price:", error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -39,11 +39,19 @@ router.post('/create-checkout-session', async (req, res) => {
 
     // Fetch the price of the parking spot
     const result = await priceOfParking(parkingSpaceId);
-    if (!result || !result.amount) {
+    if (!result || !result.price) {
       return res.status(400).json({ error: 'Price not found.' });
     }
 
-    const amountInCents = Math.round(result.amount * 100);
+    // Calculate the duration between reservationStart and reservationEnd
+    const start = new Date(reservationStart);
+    const end = new Date(reservationEnd);
+    const durationInMinutes = (end - start) / (1000 * 60); // Duration in minutes
+    const halfHourIntervals = Math.ceil(durationInMinutes / 30); // Rounding up to include partial intervals
+
+    // Calculate the total amount in cents
+    const pricePerHalfHour = result.price; // Price per half-hour
+    const totalAmount = Math.round(pricePerHalfHour * halfHourIntervals * 100); // Total amount in cents
 
     const session = await stripe.checkout.sessions.create({
       line_items: [
@@ -53,7 +61,7 @@ router.post('/create-checkout-session', async (req, res) => {
             product_data: {
               name: `Parking Spot ${parkingSpaceId}`,
             },
-            unit_amount: amountInCents,
+            unit_amount: totalAmount, // Use the calculated total amount in cents
           },
           quantity: 1,
         },

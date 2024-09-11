@@ -40,13 +40,29 @@ const App = () => {
       }
     };
 
+    const navLoc = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const {latitude, longitude} = position.coords;
+            setCurrentLocation({lat:latitude, lng:longitude});
+          },
+          (error) => {
+            console.error("Error fetching location:", error);
+          }
+        );
+
+      }else {
+        console.log("Geolocation is not supported by this browser")
+      }
+    }
 
 
     // Perform all async operations
     const initializeApp = async () => {
       await fetchData();
+      await navLoc();
       await checkLoginStatus();
-      // getLocation();
       setLoading(false);
     };
 

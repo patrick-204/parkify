@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AppBar, Toolbar, Typography, InputBase, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
+import { useNavigate } from 'react-router-dom';
 import SearchIcon from "@material-ui/icons/Search";
 import AddButton from "../AddButton/AddButton";
 import useStyles from './styles';
@@ -11,6 +12,7 @@ const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad, onLogin }) =>
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const [addParkingOpen, setAddParkingOpen] = useState(false);
+  const navigate = useNavigate();
 
   const classes = useStyles();
 
@@ -56,6 +58,7 @@ const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad, onLogin }) =>
           variant="h5"
           className={classes.title}
           style={{ color: 'red' }}
+          onClick={() => navigate('/')} 
         >
           Parkify
         </Typography>

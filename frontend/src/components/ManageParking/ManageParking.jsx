@@ -76,6 +76,7 @@ const ManageParking = ({ isLoggedIn }) => {
         if (updatedResponse.ok) {
           const data = await updatedResponse.json();
           setParkingSpaces(data.parkingSpaces);
+          window.location.href = '/';
         }
 
         setFormData({
@@ -115,7 +116,7 @@ const ManageParking = ({ isLoggedIn }) => {
             name="location"
             value={formData.location}
             onChange={handleChange}
-            placeholder="Location"
+            placeholder="Postal Code"
           />
         </div>
         <div>
@@ -162,7 +163,7 @@ const ManageParking = ({ isLoggedIn }) => {
       <table>
         <thead>
           <tr>
-            <th>Location</th>
+            <th>Postal Code</th>
             <th>Street Address</th>
             <th>City</th>
             <th>Province</th>
@@ -174,7 +175,7 @@ const ManageParking = ({ isLoggedIn }) => {
             parkingSpaces.map((space, index) => (
               <tr key={index}>
                 <td>{space.location}</td>
-                <td>{space.streetAddress}</td>
+                <td>{space.street_address}</td>
                 <td>{space.city}</td>
                 <td>{space.province}</td>
                 <td>{space.price}</td>
@@ -182,7 +183,7 @@ const ManageParking = ({ isLoggedIn }) => {
             ))
           ) : (
             <tr>
-              <td colSpan="5">No parking spaces added.</td>
+              <td colSpan="5">No parking spaces found for the user.</td>
             </tr>
           )}
         </tbody>
