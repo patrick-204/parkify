@@ -174,7 +174,7 @@ const ManageParking = ({ isLoggedIn }) => {
             parkingSpaces.map((space, index) => (
               <tr key={index}>
                 <td>{space.location}</td>
-                <td>{space.streetAddress}</td>
+                <td>{space.street_address}</td>
                 <td>{space.city}</td>
                 <td>{space.province}</td>
                 <td>{space.price}</td>
