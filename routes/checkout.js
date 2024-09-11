@@ -43,7 +43,15 @@ router.post('/create-checkout-session', async (req, res) => {
       return res.status(400).json({ error: 'Price not found.' });
     }
 
-    const amountInCents = Math.round(result.price * 100);
+    // Calculate the duration between reservationStart and reservationEnd
+    const start = new Date(reservationStart);
+    const end = new Date(reservationEnd);
+    const durationInMinutes = (end - start) / (1000 * 60); // Duration in minutes
+    const halfHourIntervals = Math.ceil(durationInMinutes / 30); // Rounding up to include partial intervals
+
+    // Calculate the total amount in cents
+    const pricePerHalfHour = result.price; // Price per half-hour
+    const totalAmount = Math.round(pricePerHalfHour * halfHourIntervals * 100); // Total amount in cents
 
     const session = await stripe.checkout.sessions.create({
       line_items: [
@@ -53,7 +61,7 @@ router.post('/create-checkout-session', async (req, res) => {
             product_data: {
               name: `Parking Spot ${parkingSpaceId}`,
             },
-            unit_amount: amountInCents,
+            unit_amount: totalAmount, // Use the calculated total amount in cents
           },
           quantity: 1,
         },
