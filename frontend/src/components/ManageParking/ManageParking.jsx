@@ -76,6 +76,7 @@ const ManageParking = ({ isLoggedIn }) => {
         if (updatedResponse.ok) {
           const data = await updatedResponse.json();
           setParkingSpaces(data.parkingSpaces);
+          window.location.href = '/';
         }
 
         setFormData({
