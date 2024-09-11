@@ -22,10 +22,6 @@ const PlaceDetails = ({ parkingSpace, isLoggedIn, selected, refProp }) => {
      ✉️ <a href={`mailto:${parkingSpace.email}`}>{parkingSpace.email}</a>
      </p>
     <p>{[parkingSpace.street_address]},{[parkingSpace.city]},{[parkingSpace.province]},</p>
-    <p>{parkingSpace.isreserved
-        ?"Currently no parking space avilable ❌"
-        :"Currently Parking space avilable ✅"
-        }   </p>
 
     {isLoggedIn ? (
       <Box  display="flex"
