@@ -1,0 +1,14 @@
+/* Styling for Booking modal */
+
+.dialog-content {
+  min-height: calc(100% + 100px); 
+}
+
+.dialog-paper {
+  height: 500px;
+}
+
+.booking-reservations-page {
+  height: 100%; 
+  box-sizing: border-box; 
+}
