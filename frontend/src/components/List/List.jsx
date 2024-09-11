@@ -36,7 +36,7 @@ const List = ({ isLoggedIn,childHovered }) => {
 
   return(
       <div className={classes.container}>
-        <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom:"20px"}} >
+        <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom:"40px"}} >
           Parking Spaces</Typography>
         {/* <FormControl className={classes.formControl}>
           <InputLabel>Order</InputLabel>

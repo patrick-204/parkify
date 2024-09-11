@@ -19,23 +19,7 @@ const App = () => {
   const [childHovered,setChildHovered] = useState(null);
 
 
-  useEffect(()=>{
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const {latitude, longitude} = position.coords;
-            setCurrentLocation({lat:latitude, lng:longitude});
-          },
-          (error) => {
-            console.error("Error fetching location:", error);
-          }
-        );
-
-      }else {
-        console.log("Geolocation is not supported by this browser")
-      }
-    },[]);
-
+  
   useEffect(() => {
     const fetchData = async () => {
       try {

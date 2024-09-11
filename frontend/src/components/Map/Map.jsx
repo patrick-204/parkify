@@ -11,9 +11,10 @@ const mapContainerStyle = {
 
 
 
-const MapContainer = ({ parkingSpaces,currentLocation,setChildHovered }) => {
+const MapContainer = ({ parkingSpaces,setChildHovered }) => {
   const [markers, setMarkers] = useState([]);
   const [map, setMap] = useState(null);
+  const [currentLocation, setCurrentLocation] = useState(null)
 
   const handleMarkerHover = (label) => {
     setChildHovered(label);
@@ -31,6 +32,22 @@ const MapContainer = ({ parkingSpaces,currentLocation,setChildHovered }) => {
   console.log(spaces)
   const parkingIds = parkingSpaces.map(row => row.id)
   console.log(parkingIds)
+  useEffect(()=>{
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const {latitude, longitude} = position.coords;
+          setCurrentLocation({lat:latitude, lng:longitude});
+        },
+        (error) => {
+          console.error("Error fetching location:", error);
+        }
+      );
+
+    }else {
+      console.log("Geolocation is not supported by this browser")
+    }
+  },[]);
 
   useEffect(() => {
     const geocodePostalCodes = async () => {
@@ -59,7 +76,7 @@ const MapContainer = ({ parkingSpaces,currentLocation,setChildHovered }) => {
       geocodePostalCodes();
     }
   },[parkingSpaces]);
-
+ console.log("map here")
   return (
     <LoadScript googleMapsApiKey="AIzaSyBctm5ncE9Kca9t8AM4hYe2-w2nIl6jitg">
       <GoogleMap

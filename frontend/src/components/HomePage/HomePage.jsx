@@ -9,7 +9,7 @@ const HomePage = ({ isLoggedIn, onLogout, parkingSpaces, currentLocation, curren
     <>
       <CssBaseline />
       <Header isLoggedIn={isLoggedIn} onLogout={onLogout} currentPath={currentPath} onHeaderLoad={onHeaderLoad} onLogin={onLogin} />
-      <Grid container spacing={3} style={{ width: '100%' }}>
+      <Grid container spacing={3} style={{ width: '100%', marginTop:'32px' }}>
         <Grid item xs={12} md={4}>
           <List isLoggedIn={isLoggedIn} childHovered={childHovered} />
         </Grid>
