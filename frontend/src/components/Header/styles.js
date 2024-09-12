@@ -4,14 +4,16 @@ export default makeStyles((theme) => ({
   title: {
     display:'none',
     flexGrow:1,
+    color: 'green',
     [theme.breakpoints.up('sm')]: {
       display: 'block',
-      fontWeight:'bold'
+      fontWeight:'bold',
+      color: 'green !important',
     },
   },
   button: {
     margin: theme.spacing(0, 1),
-    color: 'white',
+    color: 'green !important',
     backgroundColor: theme.palette.primary.main,
     '&:hover': {
       backgroundColor: alpha(theme.palette.common.white, 0.25)
@@ -20,6 +22,7 @@ export default makeStyles((theme) => ({
   search: {
     position: 'relative',
     display:'flex',
+    borderRadius: '20px',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: alpha(theme.palette.common.white, 0.15),
     '&:hover': { backgroundColor: alpha(theme.palette.common.white, 0.25) },
@@ -39,5 +42,6 @@ export default makeStyles((theme) => ({
   },
   toolbar: {
     display: 'flex', justifyContent: 'space-between', backgroundColor:'#3c3c3c',
+    backgroundColor: 'black',
   },
 }));

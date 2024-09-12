@@ -57,7 +57,7 @@ const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad, onLogin }) =>
         <Typography
           variant="h5"
           className={classes.title}
-          style={{ color: 'red' }}
+          style={{ color: 'green' }}
           onClick={() => navigate('/')} 
         >
           Parkify
@@ -69,7 +69,7 @@ const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad, onLogin }) =>
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search..."
+              placeholder="Ready to park?"
               classes={{ root: classes.inputRoot, input: classes.inputInput }}
             />
           </div>
@@ -80,7 +80,7 @@ const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad, onLogin }) =>
             <div>
               <Button
                 variant="contained"
-                style={{ backgroundColor: '#3c3c3c', color: "red" }}
+                style={{ backgroundColor: '#3c3c3c', color: "green" }}
                 onClick={RegisterHandleClickOpen}
                 className={isHome ? classes.activeButton : undefined}
               >
@@ -99,7 +99,7 @@ const Header = ({ isLoggedIn, onLogout, currentPath, onHeaderLoad, onLogin }) =>
               </Dialog>
               <Button
                 variant="contained"
-                style={{ backgroundColor: '#3c3c3c', color: "red" }}
+                style={{ backgroundColor: '#3c3c3c', color: "green" }}
                 onClick={loginHandleClickOpen}
                 className={isHome ? classes.activeButton : undefined}
               >

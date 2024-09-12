@@ -43,6 +43,8 @@ const List = ({ isLoggedIn, childHovered }) => {
             style={{
               backgroundColor: Number(childHovered) === parkingSpace.id ? '#f21b1b' : i % 2 === 0 ? '#ecece7' : '#b8b8b8',
               transition: 'background-color 0.3s',
+              borderRadius: '10px',
+              marginBottom: '15px',
             }}
           >
             <PlaceDetails

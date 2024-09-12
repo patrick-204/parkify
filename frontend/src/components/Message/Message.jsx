@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
+import MessagesPage from '../MessagesPage'; // Import your MessagesPage component
 
-function Message() {
+function Message({ currentUserId, selectedUserId }) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -14,14 +15,14 @@ function Message() {
 
   return (
     <div>
-      <Button variant="contained" color="Disable" onClick={handleClickOpen}>
+      <Button variant="contained" color="primary" onClick={handleClickOpen}>
         Message
       </Button>
 
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Modal Heading</DialogTitle>
+      <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+        <DialogTitle>Chat</DialogTitle>
         <DialogContent>
-          Modal body..
+          <MessagesPage currentUserId={currentUserId} selectedUserId={selectedUserId} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
