@@ -9,7 +9,7 @@ const morgan = require('morgan');
 const cookieSession = require("cookie-session");
 
 const http = require('http');
-const { Server } = require('socket.io');
+// const { Server } = require('socket.io');
 
 const cors = require('cors');
 
@@ -24,13 +24,13 @@ app.use(express.static(path.join(__dirname, 'frontend/build')));
 
 // socket.io configuration
 const server = http.createServer(app);
-const io = new Server(server, {
+/* const io = new Server(server, {
   cors: {
     origin: "http://localhost:3000", // Your frontend URL
     methods: ["GET", "POST"]
   }
 });
-
+*/ 
 
 
 app.use(cors({
@@ -38,6 +38,8 @@ app.use(cors({
   credentials: true
 }));
 
+
+/* 
 // Set up a connection event for incoming sockets
 io.on('connection', (socket) => {
   console.log('A user connected:', socket.id);
@@ -55,7 +57,7 @@ io.on('connection', (socket) => {
     console.log('User disconnected:', socket.id);
   });
 });
-
+*/ 
 
 app.use(cors({
   origin: 'http://localhost:3000', // Your frontend URL
@@ -154,6 +156,7 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
+/* 
 // Listen for socket.io connections
 io.on('connection', (socket) => {
   console.log('A user connected:', socket.id);
@@ -189,7 +192,6 @@ io.on('connection', (socket) => {
   });
 });
 
-/* 
 server.listen(PORT, () => {
   console.log('Server is running on http://localhost:8080');
 });
